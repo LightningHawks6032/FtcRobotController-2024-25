@@ -5,6 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import java.util.function.Function;
 
 @TeleOp(name = "Testing")
 public class TestingTeleop extends OpMode {
@@ -115,12 +118,20 @@ public class TestingTeleop extends OpMode {
     DcMotor motorlowright;
     //DcMotor slideleft;
     //DcMotor slideright;
-
+    DcMotor motor;
     MotorControls m;
+    Function<Float, Float>[] funcs = new Function[3];
+    int currFunc = 0;
     @Override
     public void init() {
-
-        motorupleft = hardwareMap.dcMotor.get("motor 1");
+        motor = hardwareMap.dcMotor.get("motor 1");
+        funcs[0] = (Float a) -> {if (Math.abs(a) <= 0.2f) {return 0f;} return 0.5f * a;};
+        funcs[1] = (Float a) -> {if (Math.abs(a) <= 0.2f) {return 0f;} return Math.signum(a) * (float)(0.54 * Math.log10(Math.abs(a)) + 0.47);};
+        funcs[2] = (Float a) -> {if (Math.abs(a) <= 0.2f) {return 0f;} return Math.signum(a) * (float)(0.048 * Math.pow(10, Math.abs(a)) + 0.025);};
+        //for (int i =0; i < hardwareMap.dcMotor.size(); i++) {
+        //    System.out.println(hardwareMap.dcMotor.entrySet().toArray()[i]);
+        //}
+        /*motorupleft = hardwareMap.dcMotor.get("motor 1");
         motorupright = hardwareMap.dcMotor.get("motor 2");
         motorlowleft = hardwareMap.dcMotor.get("motor 3");
         motorlowright = hardwareMap.dcMotor.get("motor 4");
@@ -133,44 +144,15 @@ public class TestingTeleop extends OpMode {
         motorupright.setDirection(DcMotor.Direction.REVERSE);
         motorlowright.setDirection(DcMotor.Direction.REVERSE);
         m = new MotorControls(motorupleft, motorupright, motorlowleft, motorlowright, gamepad1);
-        //slideleft.setDirection(DcMotor.Direction.FORWARD);
+        //slideleft.setDirection(DcMotor.Direction.FORWARD);*/
     }
 
     @Override
     public void loop() {
-        m.loop(new ProcessData());
-
-        /*motorupleft.setPower(gamepad1.left_stick_y);
-        motorupright.setPower(gamepad1.right_stick_y);
-        motorlowleft.setPower(gamepad1.left_stick_y);
-        motorlowright.setPower(gamepad1.right_stick_y);
-        //slideright.setPower(gamepad1.right_trigger);
-        //slideleft.setPower(gamepad1.left_trigger);
-
-        if(gamepad1.right_bumper)
-        {
-            motorupleft.setPower(0.5);
-            motorupright.setPower(0.5);
-            motorlowleft.setPower(0.5);
-            motorlowleft.setPower(0.5);
-            motorupleft.setDirection(DcMotor.Direction.FORWARD);
-            motorlowleft.setDirection(DcMotor.Direction.REVERSE);
-            motorupright.setDirection(DcMotor.Direction.REVERSE);
-            motorlowright.setDirection(DcMotor.Direction.FORWARD);
-
+        //m.loop(new ProcessData());
+        if (gamepad1.right_bumper) {
+            currFunc = (currFunc + 1) % 3;
         }
-        if(gamepad1.left_bumper)
-        {
-            motorupleft.setPower(0.5);
-            motorupright.setPower(0.5);
-            motorlowleft.setPower(0.5);
-            motorlowleft.setPower(0.5);
-            motorupleft.setDirection(DcMotor.Direction.REVERSE);
-            motorlowleft.setDirection(DcMotor.Direction.FORWARD);
-            motorupright.setDirection(DcMotor.Direction.FORWARD);
-            motorlowright.setDirection(DcMotor.Direction.REVERSE);
-
-        }*/
+        motor.setPower(funcs[currFunc].apply(gamepad1.left_stick_y));
     }
-
 }
