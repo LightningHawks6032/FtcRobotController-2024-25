@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-
+//System.out.println("skibidi rizz"); :)
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -27,27 +27,30 @@ public class TestingTeleop extends OpMode {
             ll.setPower(power);
             lr.setPower(power);
         }
+        void zeroAllMotors() {
+            powerAllMotors(0);
+        }
 
         //positive power -> forward, negative power -> backward
         void moveForward() {
             ul.setDirection(DcMotor.Direction.FORWARD);
-            ur.setDirection(DcMotor.Direction.FORWARD);
-            ll.setDirection(DcMotor.Direction.FORWARD);
+            ur.setDirection(DcMotor.Direction.REVERSE);
+            ll.setDirection(DcMotor.Direction.REVERSE);
             lr.setDirection(DcMotor.Direction.FORWARD);
         }
         //positive power -> right, negative power -> backward
         void moveSide(double power) {
             if (power == 0) {return;}
             if (power > 0) {
-                ul.setDirection(DcMotor.Direction.FORWARD);
+                ul.setDirection(DcMotor.Direction.REVERSE);
                 ur.setDirection(DcMotor.Direction.REVERSE);
                 ll.setDirection(DcMotor.Direction.REVERSE);
-                lr.setDirection(DcMotor.Direction.FORWARD);
+                lr.setDirection(DcMotor.Direction.REVERSE);
             }
             else {
                 ul.setDirection(DcMotor.Direction.REVERSE);
-                ur.setDirection(DcMotor.Direction.FORWARD);
-                ll.setDirection(DcMotor.Direction.FORWARD);
+                ur.setDirection(DcMotor.Direction.REVERSE);
+                ll.setDirection(DcMotor.Direction.REVERSE);
                 lr.setDirection(DcMotor.Direction.REVERSE);
             }
         }
@@ -56,17 +59,17 @@ public class TestingTeleop extends OpMode {
         void rotate(double power) {
             if (power == 0) {return;}
             if (power > 0) {
-                ul.setDirection(DcMotor.Direction.FORWARD);
+                ul.setDirection(DcMotor.Direction.REVERSE);
                 ur.setDirection(DcMotor.Direction.REVERSE);
                 ll.setDirection(DcMotor.Direction.FORWARD);
-                lr.setDirection(DcMotor.Direction.REVERSE);
-            }
-            else {
-                ul.setDirection(DcMotor.Direction.REVERSE);
-                ur.setDirection(DcMotor.Direction.FORWARD);
-                ll.setDirection(DcMotor.Direction.REVERSE);
                 lr.setDirection(DcMotor.Direction.FORWARD);
             }
+            /*else {
+                ul.setDirection(DcMotor.Direction.REVERSE);
+                ur.setDirection(DcMotor.Direction.REVERSE);
+                ll.setDirection(DcMotor.Direction.FORWARD);
+                lr.setDirection(DcMotor.Direction.FORWARD);
+            }*/
         }
 
         public MotorControls(DcMotor _ul, DcMotor _ur, DcMotor _ll, DcMotor _lr, Gamepad _gamepad) {
@@ -82,20 +85,22 @@ public class TestingTeleop extends OpMode {
             float yaxis = gamepad.left_stick_y;
             float xaxis = gamepad.left_stick_x;
             float raxis = gamepad.right_stick_x;
-
+             // TODO: Change direction when needed
             if (yaxis != 0 ) {
                 moveForward();
                 powerAllMotors(yaxis * 0.5);
             }
             else if (xaxis != 0) {
                 moveSide(xaxis);
-                powerAllMotors(xaxis);
+                powerAllMotors(xaxis * 0.5);
             }
             else if (raxis != 0) {
                 rotate(raxis);
-                powerAllMotors(raxis);
+                powerAllMotors(raxis * 0.5);
             }
-
+            else {
+                zeroAllMotors();
+            }
         }
 
         @Override
