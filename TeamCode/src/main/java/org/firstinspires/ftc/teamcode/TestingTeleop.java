@@ -53,5 +53,6 @@ public class TestingTeleop extends OpMode {
         if (gamepad1.right_bumper) {
             currFunc = (currFunc + 1) % 3;
         }
+        telemetry.addData("func", currFunc);
     }
 }

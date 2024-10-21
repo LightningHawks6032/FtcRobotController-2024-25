@@ -1,51 +1,71 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-//Exposes motor functionality
+///Exposes motor functionality
 public final class MotorControls implements IProcess {
-    enum STATES {
-        IDLE,
-        MOVING,
-        ROTATING,
+    /// States the motors can be in
+    enum STATE {
+        IDLE, // Not moving
+        MOVING, // Moving using 360 degree range of motion
+        ROTATING, // Rotating on self axis
+    }
+    class MotorPower {
+        // up left, up right, low left, low right
+        public float ul, ur, ll, lr;
+        // returns whether all of the powers are zero
+        public boolean isZero() {return ul == 0 && ur == 0 && ll == 0 && lr == 0;}
+
+        public MotorPower(float _ul, float _ur, float _ll, float _lr) {
+            ul = _ul;
+            ur = _ur;
+            ll = _ll;
+            lr = _lr;
+        }
+
+        public MotorPower() {
+            this(0, 0, 0, 0);
+        }
     }
 
     DcMotor ul, ur, ll, lr; // up left, up right, low left, low right
+    /// Controller used to control movement during teleop
     Controller controller;
-    Vec2Rot currentDir;
-    void powerAllMotors(double power) {
-        ul.setPower(power);
-        ur.setPower(power);
-        ll.setPower(power);
-        lr.setPower(power);
-    }
+    /// Current power that will be applied to the motors
+    MotorPower currentPower;
+    /// Current state of motion
+    STATE currentState;
 
+    /// Sets the current power to 0 for all motors
     void zeroAllMotors() {
-        powerAllMotors(0);
+        currentPower = new MotorPower();
     }
 
-    void setPower(float ulp, float urp, float llp, float lrp) {
-        ul.setPower(ulp);
-        ur.setPower(urp);
-        ll.setPower(llp);
-        lr.setPower(lrp);
+    /// Applies power to motors given a [MotorPower] object
+    void setPower(MotorPower p) {
+        ul.setPower(p.ul);
+        ur.setPower(p.ur);
+        ll.setPower(p.ll);
+        lr.setPower(p.lr);
     }
 
+    /// Sets the current power to move in the direction of given direction
     void move(Vec2 dir) {
         // Linear combination of wheels at pi/4 angle
         float c1 = 0.5f * (dir.x + dir.y);
         float c2 = 0.5f * (dir.x - dir.y);
-        setPower(-c2, c1, -c1, c2);
+        currentPower = new MotorPower(-c2, c1, -c1, c2);
     }
-    //positive power -> clockwise, negative power -> counter clockwise
-    void rotate(double power) {
-        if (power == 0) {
-            return;
-        }
-        ul.setDirection(DcMotor.Direction.REVERSE);
+
+    /// Sets the current power to rotate about the robot's self axis
+    void rotate(float power) {
+        /*ul.setDirection(DcMotor.Direction.REVERSE);
         ur.setDirection(DcMotor.Direction.REVERSE);
         ll.setDirection(DcMotor.Direction.FORWARD);
-        lr.setDirection(DcMotor.Direction.FORWARD);
+        lr.setDirection(DcMotor.Direction.FORWARD);*/
+        currentPower = new MotorPower(-power, -power, power, power);
     }
 
     public MotorControls(DcMotor _ul, DcMotor _ur, DcMotor _ll, DcMotor _lr, Controller _gamepad) {
@@ -58,21 +78,39 @@ public final class MotorControls implements IProcess {
 
     @Override
     public void loop() {
+        // Gets the direction the player is holding the left stick
         Vec2 dir = controller.leftStick();
+        // Gets the power the player is holding the right stick on it's horizontal axis
         float raxis = controller.rightStickX();
-        if (dir.nonzero()) {
+
+        // If current state is either moving or idle, then the movement direction may be modified
+        if (dir.nonzero() && currentState != STATE.ROTATING) {
             move(dir.scale(0.5f));
+            currentState = STATE.MOVING;
         }
-        else if (raxis != 0) {
+        // If current state is either rotating or idle, then the rotation power may be modified
+        else if (raxis != 0 && currentState != STATE.MOVING) {
             rotate(raxis);
-            powerAllMotors(raxis * 0.5);
-        } else {
+            currentState = STATE.ROTATING;
+        }
+        // If the player is neither moving nor rotating, then the motors should be stopped
+        else {
+            currentState = STATE.IDLE;
             zeroAllMotors();
+        }
+
+        // Debug
+        telemetry.addData("Motor State", currentState.name());
+
+        // Applies the current power to the motors given it isn't zero
+        if (!currentPower.isZero()) {
+            setPower(currentPower);
         }
     }
 
     @Override
     public void init() {
-        currentDir = new Vec2Rot(0, 0, 0);
+        currentState = STATE.IDLE;
+        zeroAllMotors();
     }
 }
