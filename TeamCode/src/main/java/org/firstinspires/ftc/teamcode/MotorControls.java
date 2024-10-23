@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -12,7 +12,7 @@ public final class MotorControls implements IProcess {
         MOVING, // Moving using 360 degree range of motion
         ROTATING, // Rotating on self axis
     }
-    class MotorPower {
+    static class MotorPower {
         // up left, up right, low left, low right
         public float ul, ur, ll, lr;
         // returns whether all of the powers are zero
@@ -28,6 +28,11 @@ public final class MotorControls implements IProcess {
         public MotorPower() {
             this(0, 0, 0, 0);
         }
+
+        @Override
+        public String toString() {
+            return "ul: " + ul + ", ur: " + ur + ", ll: " + ll + ", lr: " + lr;
+        }
     }
 
     DcMotor ul, ur, ll, lr; // up left, up right, low left, low right
@@ -37,6 +42,7 @@ public final class MotorControls implements IProcess {
     MotorPower currentPower;
     /// Current state of motion
     STATE currentState;
+    Telemetry telemetry;
 
     /// Sets the current power to 0 for all motors
     void zeroAllMotors() {
@@ -54,8 +60,8 @@ public final class MotorControls implements IProcess {
     /// Sets the current power to move in the direction of given direction
     void move(Vec2 dir) {
         // Linear combination of wheels at pi/4 angle
-        float c1 = 0.5f * (dir.x + dir.y);
-        float c2 = 0.5f * (dir.x - dir.y);
+        float c1 = dir.x + dir.y;
+        float c2 = dir.x - dir.y;
         currentPower = new MotorPower(-c2, c1, -c1, c2);
     }
 
@@ -68,12 +74,13 @@ public final class MotorControls implements IProcess {
         currentPower = new MotorPower(-power, -power, power, power);
     }
 
-    public MotorControls(DcMotor _ul, DcMotor _ur, DcMotor _ll, DcMotor _lr, Controller _gamepad) {
+    public MotorControls(DcMotor _ul, DcMotor _ur, DcMotor _ll, DcMotor _lr, Controller _gamepad, Telemetry _telemetry) {
         ul = _ul;
         ur = _ur;
         ll = _ll;
         lr = _lr;
         controller = _gamepad;
+        telemetry = _telemetry;
     }
 
     @Override
@@ -90,7 +97,7 @@ public final class MotorControls implements IProcess {
         }
         // If current state is either rotating or idle, then the rotation power may be modified
         else if (raxis != 0 && currentState != STATE.MOVING) {
-            rotate(raxis);
+            rotate(raxis * 0.5f);
             currentState = STATE.ROTATING;
         }
         // If the player is neither moving nor rotating, then the motors should be stopped
@@ -99,9 +106,9 @@ public final class MotorControls implements IProcess {
             zeroAllMotors();
         }
 
-        // Debug
-        telemetry.addData("Motor State", currentState.name());
-
+        telemetry.addData("Motor Power", new Vec2(currentPower.ll + currentPower.ul, currentPower.lr + currentPower.ur).mag());
+        telemetry.addData("Left Stick", "x: " + dir.x + ", y: " + dir.y);
+        telemetry.addData("State", currentState.name());
         // Applies the current power to the motors given it isn't zero
         if (!currentPower.isZero()) {
             setPower(currentPower);

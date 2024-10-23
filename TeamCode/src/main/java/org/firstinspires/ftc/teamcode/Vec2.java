@@ -31,6 +31,6 @@ public class Vec2 {
         return new Vec2(x / mag, y / mag);
     }
     public boolean nonzero() {
-        return x!=0&&y!=0;
+        return x!=0||y!=0;
     }
 }
