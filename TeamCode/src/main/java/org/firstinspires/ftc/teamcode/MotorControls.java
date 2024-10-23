@@ -5,7 +5,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 ///Exposes motor functionality
-public final class MotorControls implements IProcess {
+public final class MotorControls {
     /// States the motors can be in
     enum STATE {
         IDLE, // Not moving
@@ -35,9 +35,8 @@ public final class MotorControls implements IProcess {
         }
     }
 
-    DcMotor ul, ur, ll, lr; // up left, up right, low left, low right
-    /// Controller used to control movement during teleop
-    Controller controller;
+    IMotor ul, ur, ll, lr; // up left, up right, low left, low right
+
     /// Current power that will be applied to the motors
     MotorPower currentPower;
     /// Current state of motion
@@ -74,21 +73,20 @@ public final class MotorControls implements IProcess {
         currentPower = new MotorPower(-power, -power, power, power);
     }
 
-    public MotorControls(DcMotor _ul, DcMotor _ur, DcMotor _ll, DcMotor _lr, Controller _gamepad, Telemetry _telemetry) {
+    public MotorControls(IMotor _ul, IMotor _ur, IMotor _ll, IMotor _lr, Telemetry _telemetry) {
         ul = _ul;
         ur = _ur;
         ll = _ll;
         lr = _lr;
-        controller = _gamepad;
+
         telemetry = _telemetry;
     }
 
-    @Override
-    public void loop() {
+    public void loop(Vec2Rot input) {
         // Gets the direction the player is holding the left stick
-        Vec2 dir = controller.leftStick();
+        Vec2 dir = input.toVec2();
         // Gets the power the player is holding the right stick on it's horizontal axis
-        float raxis = controller.rightStickX();
+        float raxis = input.r;
 
         // If current state is either moving or idle, then the movement direction may be modified
         if (dir.nonzero() && currentState != STATE.ROTATING) {
@@ -106,16 +104,13 @@ public final class MotorControls implements IProcess {
             zeroAllMotors();
         }
 
-        telemetry.addData("Motor Power", new Vec2(currentPower.ll + currentPower.ul, currentPower.lr + currentPower.ur).mag());
+        telemetry.addData("Motor Power", currentPower);
         telemetry.addData("Left Stick", "x: " + dir.x + ", y: " + dir.y);
         telemetry.addData("State", currentState.name());
         // Applies the current power to the motors given it isn't zero
-        if (!currentPower.isZero()) {
-            setPower(currentPower);
-        }
+        setPower(currentPower);
     }
 
-    @Override
     public void init() {
         currentState = STATE.IDLE;
         zeroAllMotors();
