@@ -61,7 +61,7 @@ public final class MotorControls {
         // Linear combination of wheels at pi/4 angle
         float c1 = dir.x + dir.y;
         float c2 = dir.x - dir.y;
-        currentPower = new MotorPower(-c2, c1, -c1, c2);
+        currentPower = new MotorPower(-c2, -c1, -c1, -c2);
     }
 
     /// Sets the current power to rotate about the robot's self axis

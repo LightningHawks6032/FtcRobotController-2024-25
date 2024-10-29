@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 public class DCMotor implements IMotor{
     DcMotor motor;
     MotorSpec spec;
@@ -9,6 +11,7 @@ public class DCMotor implements IMotor{
 
     public DCMotor(DcMotor _motor, MotorSpec _spec) {
         motor = _motor;
+        motor.setDirection(DcMotorSimple.Direction.FORWARD);
         spec = _spec == null ? GOBILDA_5000_0002_0001 : _spec;
     }
 

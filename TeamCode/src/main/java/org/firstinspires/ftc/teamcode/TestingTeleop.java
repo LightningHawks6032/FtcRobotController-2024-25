@@ -2,8 +2,7 @@ package org.firstinspires.ftc.teamcode;
 //System.out.println("skibidi rizz"); :)
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-@TeleOp(name = "Testing")
+@TeleOp(name = "Teleop")
 public class TestingTeleop extends OpMode {
     DCMotor motorupleft;
     DCMotor motorupright;
@@ -21,7 +20,7 @@ public class TestingTeleop extends OpMode {
         motorlowleft = new DCMotor(hardwareMap.dcMotor.get("motor 3"), null);
         motorlowright = new DCMotor(hardwareMap.dcMotor.get("motor 4"), null);
         c = new GamepadController(gamepad1);
-        m = new MotorControls(motorupleft, /*motorupright, motorlowleft, motorlowright,*/ new DebugMotor("motor 2", telemetry, null), new DebugMotor("motor 3", telemetry, null),new DebugMotor("motor 4", telemetry, null), telemetry);
+        m = new MotorControls(motorupleft, motorupright, motorlowleft, motorlowright, telemetry);
     }
 
     @Override
