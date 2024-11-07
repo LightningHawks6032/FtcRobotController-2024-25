@@ -59,9 +59,9 @@ public final class MotorControls {
     /// Sets the current power to move in the direction of given direction
     void move(Vec2 dir) {
         // Linear combination of wheels at pi/4 angle
-        float c1 = dir.x + dir.y;
-        float c2 = dir.x - dir.y;
-        currentPower = new MotorPower(-c2, -c1, -c1, -c2);
+        float c1 = -dir.x - dir.y;
+        float c2 = -dir.x + dir.y;
+        currentPower = new MotorPower(c2, c1, c1, c2);
     }
 
     /// Sets the current power to rotate about the robot's self axis
