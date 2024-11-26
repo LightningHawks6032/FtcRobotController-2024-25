@@ -13,7 +13,8 @@ public final class GamepadController  implements IController {
     public Vec2 leftStick() {return new Vec2(gamepad.left_stick_x, gamepad.left_stick_y);}
     @Override
     public Vec2 rightStick() {return new Vec2(gamepad.right_stick_x, gamepad.right_stick_y);}
-
+    public boolean pressedA() {return gamepad.a;}
+    public boolean pressedB() {return gamepad.b;}
 
     public GamepadController(Gamepad _gamepad) {
         gamepad = _gamepad;

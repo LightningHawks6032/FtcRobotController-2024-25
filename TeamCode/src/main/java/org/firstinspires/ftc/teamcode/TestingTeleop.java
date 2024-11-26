@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "TeleOp")
 public class TestingTeleop extends OpMode {
@@ -11,77 +11,40 @@ public class TestingTeleop extends OpMode {
     DCMotor motorupright;
     DCMotor motorlowleft;
     DCMotor motorlowright;
-    DcMotor sl;
-    DcMotor sr;
+    DCMotor sl;
+    DCMotor sr;
     DCMotor motor;
     MotorControls m;
-    GamepadController c;
+    GamepadController g1, g2;
+    ArmControls a;
+    ElapsedTime time;
     @Override
     public void init() {
         motorupleft = new DCMotor(hardwareMap.dcMotor.get("motor 1"), null);
         motorupright = new DCMotor(hardwareMap.dcMotor.get("motor 2"), null);
         motorlowleft = new DCMotor(hardwareMap.dcMotor.get("motor 3"), null);
         motorlowright = new DCMotor(hardwareMap.dcMotor.get("motor 4"), null);
-        sl = hardwareMap.get(DcMotor.class, "sl" );
-        sr = hardwareMap.get(DcMotor.class, "sr" );
-        sr.setDirection(DcMotor.Direction.REVERSE);
-        sl.setDirection(DcMotor.Direction.REVERSE);
-        sl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        sr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        int srinitialposition = sr.getCurrentPosition();
-        int slinitialposition = sl.getCurrentPosition();
-        c = new GamepadController(gamepad1);
+        sl = new DCMotor(hardwareMap.get(DcMotor.class, "sl" ), null);
+        sr = new DCMotor(hardwareMap.get(DcMotor.class, "sr" ), null);
+        g1 = new GamepadController(gamepad1);
+        g2 = new GamepadController(gamepad2);
         m = new MotorControls(motorupleft, motorupright, motorlowleft, motorlowright, telemetry);
-
+        a = new ArmControls(sr, sl, telemetry);
+        time = new ElapsedTime();
+        time.reset();
     }
 
     @Override
     public void loop() {
-        m.loop(new Vec2Rot(c.leftStick(), c.rightStick().x));
-        if(gamepad2.b && sr.getCurrentPosition() <= 5000)
-        {
-            sl.setTargetPosition(5000);
-            sr.setTargetPosition(5000);
-            sl.setPower(0.9);
-            sr.setPower(0.9);
-
-        }else if(gamepad2.a && sr.getCurrentPosition() >= 0 )
-        {
-            sl.setTargetPosition(0);
-            sr.setTargetPosition(0);
-            sl.setPower(-0.9);
-            sr.setPower(-0.9);
+        m.loop(new Vec2Rot(g1.leftStick(), g1.rightStick().x));
+        if (g2.pressedB()){
+            a.goDown();
         }
-        else
+        else if (g2.pressedA())
         {
-            sl.setPower(0);
-            sr.setPower(0);
+            a.goUp();
         }
-        if(gamepad2.left_stick_y > 0 )
-        {
-            sl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            sr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            while( sr.getCurrentPosition() <= 5000)
-            {
-                sl.setPower(gamepad2.left_stick_y * 0.75);
-                sr.setPower(gamepad2.left_stick_y * 0.75);
-            }
-        }else if(gamepad2.left_stick_y < 0 )
-        {
-            sl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            sr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            while(sr.getCurrentPosition() >= -100)
-            {
-                sl.setPower(gamepad2.left_stick_y * 0.75);
-                sr.setPower(gamepad2.left_stick_y * 0.75);
-            }
-        }
-        else
-        {
-            sl.setPower(0);
-            sr.setPower(0);
-        }
-        telemetry.addData("sl position", sl.getCurrentPosition());
-        telemetry.addData("sr position", sr.getCurrentPosition());
+        a.loop(g2.leftStickY(), (float) time.seconds());
+        time.reset();
     }
 }

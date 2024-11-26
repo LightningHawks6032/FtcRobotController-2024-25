@@ -3,6 +3,11 @@ package org.firstinspires.ftc.teamcode;
 public class PID {
     public static class LinearCoefficients {
         public float P, I, D;
+        public LinearCoefficients(float _P, float _I, float _D) {
+            P = _P;
+            I = _I;
+            D = _I;
+        }
     }
 
     public static class Linear {

@@ -6,15 +6,22 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class DCMotor implements IMotor{
     DcMotor motor;
     MotorSpec spec;
+    boolean usingEncoder;
+    public static MotorSpec GOBILDA_5000_0002_0001 = new MotorSpec(6000, 1.47f, 145.6f);
 
-    public static MotorSpec GOBILDA_5000_0002_0001 = new MotorSpec(6000, 1.47f);
+    public DCMotor(DcMotor _motor, boolean _usingEncoder, MotorSpec _spec) {
+        motor = _motor;
+        motor.setDirection(DcMotorSimple.Direction.FORWARD);
+        spec = _spec == null ? GOBILDA_5000_0002_0001 : _spec;
+        usingEncoder = _usingEncoder;
+    }
 
     public DCMotor(DcMotor _motor, MotorSpec _spec) {
         motor = _motor;
         motor.setDirection(DcMotorSimple.Direction.FORWARD);
         spec = _spec == null ? GOBILDA_5000_0002_0001 : _spec;
+        usingEncoder = false;
     }
-
     @Override
     public void setPower(float power) {
         motor.setPower(power);
@@ -28,6 +35,16 @@ public class DCMotor implements IMotor{
     @Override
     public void setTorque(float torque_KgCm, float currentVelocity_RPM) {
         setPower(torque_KgCm / spec.stallTorque + currentVelocity_RPM / spec.noLoadSpeed);
+    }
+
+    @Override
+    public int getPosition() {
+        assert usingEncoder;
+        return motor.getCurrentPosition();
+    }
+    @Override
+    public void setVelocity(float velocity_ticksPerSecond) {
+        setPower(velocity_ticksPerSecond * 60 / (spec.noLoadSpeed * spec.encoderResolution));
     }
 }
 

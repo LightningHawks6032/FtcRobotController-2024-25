@@ -33,4 +33,15 @@ public class DebugMotor implements IMotor {
         currentPower = torque_KgCm / spec.stallTorque + currentVelocity_RPM / spec.noLoadSpeed;
         telemetry.addData(id + " Torque", currentPower);
     }
+
+    @Override
+    public int getPosition() {
+        return 0; // TODO: Fix this :)
+    }
+
+    @Override
+    public void setVelocity(float velocity) {
+
+    }
+
 }
