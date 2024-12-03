@@ -6,4 +6,5 @@ public interface IMotor {
     void setTorque(float torque, float currentVelocity);
     int getPosition();
     void setVelocity(float velocity);
+    float getVelocity();
 }

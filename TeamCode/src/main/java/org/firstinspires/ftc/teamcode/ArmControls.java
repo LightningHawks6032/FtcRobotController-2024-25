@@ -20,8 +20,7 @@ public class ArmControls {
     int targetPosition = 0;
     Telemetry telemetry;
 
-    PID.Linear posPID = new PID.Linear(new PID.LinearCoefficients(0.52f, 0.51f, 0.815f));
-
+    PID.Linear posPID = new PID.Linear(new PID.LinearCoefficients(1f, 0f, -0.61f));
     public ArmControls(IMotor _sr, IMotor _sl, Telemetry _telemetry) {
         sr = _sr;
         sl = _sl;
@@ -49,6 +48,7 @@ public class ArmControls {
 
     void moveToTargetPosition(float _dt_Second) {
         if (state != STATE.TARGET) {return;}
+
         float vel = posPID.loop(sl.getPosition(), targetPosition, _dt_Second);
         sl.setVelocity(vel);
         sr.setVelocity(vel);
@@ -68,59 +68,15 @@ public class ArmControls {
     public void loop(float power, float _dt_Second) {
         if (power != 0 && _dt_Second != 0) {
             moveWithPower(power);
-        }
-        else if (state == STATE.TARGET) {
+        } else if (state == STATE.TARGET) {
             moveToTargetPosition(_dt_Second);
             if (Math.abs(sl.getPosition() - targetPosition) <= ARRIVAL_THRESHOLD) {
                 state = STATE.IDLE;
             }
-        }
-        else {
+        } else {
             zeroMotors();
         }
-        /*if(gamepad2.b && sr.getCurrentPosition() <= 5000)
-        {
-            sl.setTargetPosition(5000);
-            sr.setTargetPosition(5000);
-            sl.setPower(0.9);
-            sr.setPower(0.9);
-
-        }else if(gamepad2.a && sr.getCurrentPosition() >= 0 )
-        {
-            sl.setTargetPosition(0);
-            sr.setTargetPosition(0);
-            sl.setPower(-0.9);
-            sr.setPower(-0.9);
-        }
-        else
-        {
-            sl.setPower(0);
-            sr.setPower(0);
-        }
-        if(gamepad2.left_stick_y > 0 )
-        {
-            sl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            sr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            while( sr.getCurrentPosition() <= 5000)
-            {
-                sl.setPower(gamepad2.left_stick_y * 0.75);
-                sr.setPower(gamepad2.left_stick_y * 0.75);
-            }
-        }else if(gamepad2.left_stick_y < 0 )
-        {
-            sl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            sr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            while(sr.getCurrentPosition() >= -100)
-            {
-                sl.setPower(gamepad2.left_stick_y * 0.75);
-                sr.setPower(gamepad2.left_stick_y * 0.75);
-            }
-        }
-        else
-        {
-            sl.setPower(0);
-            sr.setPower(0);
-        }*/
+        telemetry.addData("arm state", state.name());
     }
 
 }

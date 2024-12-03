@@ -22,7 +22,7 @@ public class PID {
             float derivative = (proportional - previousError) / dt;
             accumulatedError = integral;
             previousError = proportional;
-            return dt * (coeff.P * proportional + coeff.I * integral + coeff.D * derivative);
+            return (coeff.P * proportional + coeff.I * integral + coeff.D * derivative);
         }
 
         public Linear(LinearCoefficients _coeff) {

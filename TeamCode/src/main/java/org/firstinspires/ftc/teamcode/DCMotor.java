@@ -46,5 +46,10 @@ public class DCMotor implements IMotor{
     public void setVelocity(float velocity_ticksPerSecond) {
         setPower(velocity_ticksPerSecond * 60 / (spec.noLoadSpeed * spec.encoderResolution));
     }
+
+    @Override
+    public float getVelocity() {
+        return getPower() * spec.noLoadSpeed * spec.encoderResolution / 60;
+    }
 }
 

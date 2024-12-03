@@ -7,43 +7,44 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "TeleOp")
 public class TestingTeleop extends OpMode {
-    DCMotor motorupleft;
-    DCMotor motorupright;
-    DCMotor motorlowleft;
-    DCMotor motorlowright;
-    DCMotor sl;
-    DCMotor sr;
-    DCMotor motor;
+    IMotor motorupleft;
+    IMotor motorupright;
+    IMotor motorlowleft;
+    IMotor motorlowright;
+    IMotor sl;
+    IMotor sr;
+    IMotor cl;
+    IMotor cr;
     MotorControls m;
     GamepadController g1, g2;
     ArmControls a;
+    HangClawControls h;
     ElapsedTime time;
     @Override
     public void init() {
-        motorupleft = new DCMotor(hardwareMap.dcMotor.get("motor 1"), null);
-        motorupright = new DCMotor(hardwareMap.dcMotor.get("motor 2"), null);
-        motorlowleft = new DCMotor(hardwareMap.dcMotor.get("motor 3"), null);
-        motorlowright = new DCMotor(hardwareMap.dcMotor.get("motor 4"), null);
-        sl = new DCMotor(hardwareMap.get(DcMotor.class, "sl" ), null);
-        sr = new DCMotor(hardwareMap.get(DcMotor.class, "sr" ), null);
+        motorupleft = new DebugMotor("ul", telemetry, null); //DCMotor(hardwareMap.dcMotor.get("motor 1"), null);
+        motorupright = new DebugMotor("ur", telemetry, null);//DCMotor(hardwareMap.dcMotor.get("motor 2"), null);
+        motorlowleft = new DebugMotor("ll", telemetry, null);//DCMotor(hardwareMap.dcMotor.get("motor 3"), null);
+        motorlowright = new DebugMotor("lr", telemetry, null);//DCMotor(hardwareMap.dcMotor.get("motor 4"), null);
+        sl = new DebugMotor("sl", telemetry, null);//DCMotor(hardwareMap.get(DcMotor.class, "sl" ), null);
+        sr = new DebugMotor("sr", telemetry, null);//DCMotor(hardwareMap.get(DcMotor.class, "sr" ), null);
+        cl = new DCMotor(hardwareMap.dcMotor.get("motor 1"), null);//DebugMotor("cl", telemetry, null);
+        cr = new DCMotor(hardwareMap.dcMotor.get("motor 2"), null);//DebugMotor("cr", telemetry, null);
         g1 = new GamepadController(gamepad1);
         g2 = new GamepadController(gamepad2);
         m = new MotorControls(motorupleft, motorupright, motorlowleft, motorlowright, telemetry);
         a = new ArmControls(sr, sl, telemetry);
+        h = new HangClawControls(cl, cr, telemetry);
         time = new ElapsedTime();
         time.reset();
+        m.init();
+        a.init();
     }
 
     @Override
     public void loop() {
         m.loop(new Vec2Rot(g1.leftStick(), g1.rightStick().x));
-        if (g2.pressedB()){
-            a.goDown();
-        }
-        else if (g2.pressedA())
-        {
-            a.goUp();
-        }
+        h.loop((g2.pressedA() ? -1 : 0)  + (g2.pressedB() ? 1 : 0));
         a.loop(g2.leftStickY(), (float) time.seconds());
         time.reset();
     }
