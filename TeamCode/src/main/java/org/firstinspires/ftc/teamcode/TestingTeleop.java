@@ -22,14 +22,14 @@ public class TestingTeleop extends OpMode {
     ElapsedTime time;
     @Override
     public void init() {
-        motorupleft = new DebugMotor("ul", telemetry, null); //DCMotor(hardwareMap.dcMotor.get("motor 1"), null);
-        motorupright = new DebugMotor("ur", telemetry, null);//DCMotor(hardwareMap.dcMotor.get("motor 2"), null);
-        motorlowleft = new DebugMotor("ll", telemetry, null);//DCMotor(hardwareMap.dcMotor.get("motor 3"), null);
-        motorlowright = new DebugMotor("lr", telemetry, null);//DCMotor(hardwareMap.dcMotor.get("motor 4"), null);
-        sl = new DebugMotor("sl", telemetry, null);//DCMotor(hardwareMap.get(DcMotor.class, "sl" ), null);
-        sr = new DebugMotor("sr", telemetry, null);//DCMotor(hardwareMap.get(DcMotor.class, "sr" ), null);
-        cl = new DCMotor(hardwareMap.dcMotor.get("motor 1"), null);//DebugMotor("cl", telemetry, null);
-        cr = new DCMotor(hardwareMap.dcMotor.get("motor 2"), null);//DebugMotor("cr", telemetry, null);
+        motorupleft = new DCMotor(hardwareMap.dcMotor.get("motor 1"), null);
+        motorupright = new DCMotor(hardwareMap.dcMotor.get("motor 2"), null);
+        motorlowleft = new DCMotor(hardwareMap.dcMotor.get("motor 3"), null);
+        motorlowright = new DCMotor(hardwareMap.dcMotor.get("motor 4"), null);
+        sl = new DCMotor(hardwareMap.get(DcMotor.class, "sl" ), null);
+        sr = new DCMotor(hardwareMap.get(DcMotor.class, "sr" ), null);
+        cl = new ContinuousServo(hardwareMap.servo.get("servo 1"));//DebugMotor("cl", telemetry, null);
+        cr = new ContinuousServo(hardwareMap.servo.get("servo 2"));//DebugMotor("cr", telemetry, null);
         g1 = new GamepadController(gamepad1);
         g2 = new GamepadController(gamepad2);
         m = new MotorControls(motorupleft, motorupright, motorlowleft, motorlowright, telemetry);
