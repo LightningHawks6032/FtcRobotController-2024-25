@@ -13,7 +13,7 @@ public class HangClawControls {
     }
 
     public void loop(int power) {
-        float p = p+1;
+        float p = Math.signum(power);
         cl.setPower(p);
         cr.setPower(-p);
     }
