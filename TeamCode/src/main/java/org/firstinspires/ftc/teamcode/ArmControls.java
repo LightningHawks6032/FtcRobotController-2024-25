@@ -63,6 +63,7 @@ public class ArmControls {
     void zeroMotors() {
         sl.setPower(0);
         sr.setPower(0);
+        state = STATE.IDLE;
     }
 
     public void loop(float power, float _dt_Second) {
@@ -73,7 +74,8 @@ public class ArmControls {
             if (Math.abs(sl.getPosition() - targetPosition) <= ARRIVAL_THRESHOLD) {
                 state = STATE.IDLE;
             }
-        } else {
+        }
+        else {
             zeroMotors();
         }
         telemetry.addData("arm state", state.name());

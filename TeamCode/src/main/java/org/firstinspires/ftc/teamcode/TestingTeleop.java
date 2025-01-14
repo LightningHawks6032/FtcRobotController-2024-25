@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "TeleOp")
 public class TestingTeleop extends OpMode {
-    IMotor motorupleft;
+    /*IMotor motorupleft;
     IMotor motorupright;
     IMotor motorlowleft;
     IMotor motorlowright;
@@ -16,36 +16,27 @@ public class TestingTeleop extends OpMode {
     IMotor cl;
     IMotor cr;
     MotorControls m;
-    GamepadController g1, g2;
+
     ArmControls a;
     HangClawControls h;
+    */
     ElapsedTime time;
+    GamepadController g1, g2;
+    RobotController robot;
     @Override
     public void init() {
-        motorupleft = new DCMotor(hardwareMap.dcMotor.get("motor 1"), null);
-        motorupright = new DCMotor(hardwareMap.dcMotor.get("motor 2"), null);
-        motorlowleft = new DCMotor(hardwareMap.dcMotor.get("motor 3"), null);
-        motorlowright = new DCMotor(hardwareMap.dcMotor.get("motor 4"), null);
-        sl = new DCMotor(hardwareMap.get(DcMotor.class, "sl" ), null);
-        sr = new DCMotor(hardwareMap.get(DcMotor.class, "sr" ), null);
-        cl = new ContinuousServo(hardwareMap.servo.get("servo 1"));//DebugMotor("cl", telemetry, null);
-        cr = new ContinuousServo(hardwareMap.servo.get("servo 2"));//DebugMotor("cr", telemetry, null);
+
+        time = new ElapsedTime();
         g1 = new GamepadController(gamepad1);
         g2 = new GamepadController(gamepad2);
-        m = new MotorControls(motorupleft, motorupright, motorlowleft, motorlowright, telemetry);
-        a = new ArmControls(sr, sl, telemetry);
-        h = new HangClawControls(cl, cr, telemetry);
-        time = new ElapsedTime();
-        time.reset();
-        m.init();
-        a.init();
+
+        robot = new RobotController(hardwareMap, telemetry);
+        robot.init();
     }
 
     @Override
     public void loop() {
-        m.loop(new Vec2Rot(g1.leftStick(), g1.rightStick().x));
-        h.loop((g2.pressedA() ? -1 : 0)  + (g2.pressedB() ? 1 : 0));
-        a.loop(g2.leftStickY(), (float) time.seconds());
+        robot.loop(new Vec2Rot(g1.leftStick(), g1.rightStick().x), g2.leftStickY(), (g2.pressedA() ? -1 : 0)  + (g2.pressedB() ? 1 : 0),(g2.pressedX() ? -1 : 0)  + (g2.pressedY() ? 1 : 0), (int)Math.signum(g2.rightStickY()), (float) time.seconds());
         time.reset();
     }
 }
