@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
+/// Controls vertical slide (for hanging)
 public class ArmControls {
     enum STATE {
         IDLE, // Not moving
