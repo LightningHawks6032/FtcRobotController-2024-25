@@ -24,7 +24,7 @@ public class ContinuousServo implements IMotor {
 
     @Override
     public int getPosition() {
-        return 0;
+        return (int)(servo.getPosition() * 100);
     }
 
     @Override

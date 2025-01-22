@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -44,8 +45,12 @@ public class RobotController {
         slideLeft = new DCMotor(hardwareMap.get(DcMotor.class, "sl" ), null, DcMotorSimple.Direction.FORWARD);
         slideRight = new DCMotor(hardwareMap.get(DcMotor.class, "sr" ), null, DcMotorSimple.Direction.REVERSE);
         hangClaw = new ContinuousServo(hardwareMap.servo.get("hangClaw"));//DebugMotor("cl", telemetry, null);
-        pickUpClawLeft = new ContinuousServo(hardwareMap.servo.get("pcl"));//DebugMotor("cr", telemetry, null);
-        pickUpClawRight = new ContinuousServo(hardwareMap.servo.get("pcr"));//DebugMotor("cr", telemetry, null);
+        Servo pcl = hardwareMap.servo.get("pcl");
+        pcl.setDirection(Servo.Direction.REVERSE);
+        Servo pcr = hardwareMap.servo.get("pcr");
+        pcr.setDirection(Servo.Direction.REVERSE);
+        pickUpClawLeft = new ContinuousServo(pcl);//DebugMotor("cr", telemetry, null);
+        pickUpClawRight = new ContinuousServo(pcr);//DebugMotor("cr", telemetry, null);
         horizontalSlide = new DCMotor(hardwareMap.dcMotor.get("hs"), null, DcMotorSimple.Direction.FORWARD);
 
         floorClaw = new ContinuousServo(hardwareMap.servo.get("fc"));

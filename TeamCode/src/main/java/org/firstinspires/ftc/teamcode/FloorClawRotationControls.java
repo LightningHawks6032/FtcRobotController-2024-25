@@ -10,7 +10,7 @@ public class FloorClawRotationControls {
     public FloorClawRotationControls(IMotor _c, Telemetry _telemetry) {
         c = _c;
         telemetry = _telemetry;
-        isOpen = true;
+        isOpen = false;
     }
 
     void open() {

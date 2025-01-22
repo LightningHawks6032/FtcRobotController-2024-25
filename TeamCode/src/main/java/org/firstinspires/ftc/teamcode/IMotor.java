@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.Servo;
+
 public interface IMotor {
     void setPower(float power);
     float getPower();
@@ -7,4 +9,5 @@ public interface IMotor {
     int getPosition();
     void setVelocity(float velocity);
     float getVelocity();
+
 }

@@ -13,11 +13,11 @@ public class FloorClawControls {
     }
 
     void close() {
-        c.setPower(0.3f);
+        c.setPower(0.4f);
         isOpen = false;
     }
     void open() {
-        c.setPower(0.2f);
+        c.setPower(0.3f);
         isOpen = true;
     }
 

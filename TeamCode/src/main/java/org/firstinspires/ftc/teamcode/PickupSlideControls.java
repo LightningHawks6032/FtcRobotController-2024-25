@@ -7,7 +7,7 @@ public class PickupSlideControls {
     Telemetry telemetry;
     boolean up;
 
-    public PickupSlideControls(IMotor _cr, IMotor _cl, Telemetry _telemetry) {
+    public PickupSlideControls(IMotor _cl, IMotor _cr, Telemetry _telemetry) {
         cr = _cr;
         cl = _cl;
         telemetry = _telemetry;
@@ -19,13 +19,12 @@ public class PickupSlideControls {
     }
     void goDown() {
         setPower(0.3f);
-        telemetry.addData("POWWWER" ,0.8);
+
         up = false;
     }
     void goUp() {
-        setPower(0.9f);
+        setPower(0.8f);
         up = true;
-        telemetry.addData("POWWWER" ,0.9);
 
     }
 
@@ -33,8 +32,9 @@ public class PickupSlideControls {
         /*float p = (1 + Math.signum(power)) / 2f;
         cr.setPower(p);
         cl.setPower(1-p);*/
-        if (power > 0 && !up) {goUp();}
-        else if (power < 0 && up) {goDown();}
+        if (-power > 0 && !up) {goUp();}
+        else if (-power < 0 && up) {goDown();}
+        telemetry.addData("powr", cl.getPosition() + ", " + cr.getPosition());
     }
 
 }
