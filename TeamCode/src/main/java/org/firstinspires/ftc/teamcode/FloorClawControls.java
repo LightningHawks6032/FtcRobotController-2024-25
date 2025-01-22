@@ -2,11 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class HangClawControls {
+public class FloorClawControls {
     IMotor c;
     Telemetry telemetry;
     boolean isOpen;
-    public HangClawControls(IMotor _c, Telemetry _telemetry) {
+    public FloorClawControls(IMotor _c, Telemetry _telemetry) {
         c = _c;
         telemetry = _telemetry;
         isOpen = true;
@@ -17,7 +17,7 @@ public class HangClawControls {
         isOpen = false;
     }
     void open() {
-        c.setPower(-0.1f);
+        c.setPower(0.2f);
         isOpen = true;
     }
 

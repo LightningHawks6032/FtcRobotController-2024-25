@@ -13,6 +13,6 @@ public class HorizontalSlideControls {
 
     public void loop(int power) {
         float p = (1 + Math.signum(power)) / 2f;
-        c.setPower(p);
+        c.setPower(power/2f);
     }
 }

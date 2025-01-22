@@ -67,7 +67,7 @@ public class ArmControls {
     }
 
     public void loop(float power, float _dt_Second) {
-        if (power != 0 && _dt_Second != 0) {
+        /*if (power != 0 && _dt_Second != 0) {
             moveWithPower(power);
         } else if (state == STATE.TARGET) {
             moveToTargetPosition(_dt_Second);
@@ -79,6 +79,7 @@ public class ArmControls {
             zeroMotors();
         }
         telemetry.addData("arm state", state.name());
+    }*/
+        moveWithPower(power / 2f);
     }
-
 }

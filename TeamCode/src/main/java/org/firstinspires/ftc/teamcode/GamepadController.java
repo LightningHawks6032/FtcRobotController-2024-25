@@ -17,8 +17,9 @@ public final class GamepadController  implements IController {
     public boolean pressedB() {return gamepad.b;}
     public boolean pressedX() {return gamepad.x;}
     public boolean pressedY() {return gamepad.y;}
-
-
+    public int bumper() {return (gamepad.right_bumper?1:0) - (gamepad.left_bumper?1:0);}
+    public float trigger() {return gamepad.right_trigger - gamepad.left_trigger;}
+    public int horizontalDPad() {return (gamepad.dpad_right?1:0) - (gamepad.dpad_left?1:0);}
     public GamepadController(Gamepad _gamepad) {
         gamepad = _gamepad;
     }

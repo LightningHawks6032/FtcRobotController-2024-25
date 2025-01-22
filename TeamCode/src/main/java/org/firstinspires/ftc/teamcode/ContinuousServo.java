@@ -9,7 +9,7 @@ public class ContinuousServo implements IMotor {
     Servo servo;
     @Override
     public void setPower(float power) {
-        servo.setPosition((power+1)/2);
+        servo.setPosition(power);
     }
 
     @Override

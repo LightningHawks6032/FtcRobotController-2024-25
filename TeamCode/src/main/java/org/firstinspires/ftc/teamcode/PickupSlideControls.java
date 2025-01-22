@@ -5,18 +5,36 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class PickupSlideControls {
     IMotor cr, cl;
     Telemetry telemetry;
+    boolean up;
 
     public PickupSlideControls(IMotor _cr, IMotor _cl, Telemetry _telemetry) {
         cr = _cr;
         cl = _cl;
         telemetry = _telemetry;
+        up = false;
+    }
+    void setPower(float p) {
+        cr.setPower(p);
+        cl.setPower(p);
+    }
+    void goDown() {
+        setPower(0.3f);
+        telemetry.addData("POWWWER" ,0.8);
+        up = false;
+    }
+    void goUp() {
+        setPower(0.9f);
+        up = true;
+        telemetry.addData("POWWWER" ,0.9);
 
     }
 
     public void loop (int power) {
-        float p = (1 + Math.signum(power)) / 2f;
+        /*float p = (1 + Math.signum(power)) / 2f;
         cr.setPower(p);
-        cl.setPower(1-p);
+        cl.setPower(1-p);*/
+        if (power > 0 && !up) {goUp();}
+        else if (power < 0 && up) {goDown();}
     }
 
 }

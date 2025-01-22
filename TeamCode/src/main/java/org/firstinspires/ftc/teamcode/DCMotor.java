@@ -15,10 +15,13 @@ public class DCMotor implements IMotor{
         spec = _spec == null ? GOBILDA_5000_0002_0001 : _spec;
         usingEncoder = _usingEncoder;
     }
+    public void setDirection(DcMotorSimple.Direction dir) {
+        motor.setDirection((dir));
 
-    public DCMotor(DcMotor _motor, MotorSpec _spec) {
+    }
+    public DCMotor(DcMotor _motor, MotorSpec _spec, DcMotorSimple.Direction dir) {
         motor = _motor;
-        motor.setDirection(DcMotorSimple.Direction.FORWARD);
+        motor.setDirection(dir);
         spec = _spec == null ? GOBILDA_5000_0002_0001 : _spec;
         usingEncoder = false;
     }
