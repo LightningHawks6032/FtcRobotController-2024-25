@@ -53,7 +53,8 @@ public class RobotController {
         pickUpClawRight = new ContinuousServo(pcr);//DebugMotor("cr", telemetry, null);
         horizontalSlide = new DCMotor(hardwareMap.dcMotor.get("hs"), null, DcMotorSimple.Direction.FORWARD);
 
-        floorClaw = new ContinuousServo(hardwareMap.servo.get("fc"));
+        Servo fc = hardwareMap.servo.get("fc");
+        floorClaw = new ContinuousServo(fc);
         floorClawRotation = new ContinuousServo(hardwareMap.servo.get("fcr"));
 
         //floor claw, floor claw rotation
@@ -75,8 +76,8 @@ public class RobotController {
         armControls.init();
     }
 
-    public void loop(Vec2Rot moveDirection, float verticalArmControlPower, int hangClawControlPower, int horizontalSlideControlPower, int pickUpSlideControlPower, int floorClawControlPower, int floorClawRotationControlPower, int hangClawPower, float dt) {
-        motorControls.loop(moveDirection);
+    public void loop(Vec2Rot moveDirection, boolean slowMode, float verticalArmControlPower, int hangClawControlPower, int horizontalSlideControlPower, int pickUpSlideControlPower, int floorClawControlPower, int floorClawRotationControlPower, int hangClawPower, float dt) {
+        motorControls.loop(moveDirection, slowMode);
         armControls.loop(verticalArmControlPower, dt);
         hangClawControls.loop(hangClawPower);
         horizontalSlideControls.loop(horizontalSlideControlPower);

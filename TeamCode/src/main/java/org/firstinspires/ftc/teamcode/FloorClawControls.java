@@ -13,11 +13,12 @@ public class FloorClawControls {
     }
 
     void close() {
-        c.setPower(0.4f);
+        c.setPower(0.65f);
         isOpen = false;
     }
     void open() {
-        c.setPower(0.3f);
+        c.setPower(0.5f);
+        System.out.println("HERE");
         isOpen = true;
     }
 
@@ -25,6 +26,7 @@ public class FloorClawControls {
     public void loop(int power) {
         /*float p = (1 + Math.signum(power)) / 2f;
         c.setPower(p);*/
+        telemetry.addData("POwer", c.getPosition());
         if (power > 0 && !isOpen) {open();}
         else if (power < 0 && isOpen) {close();}
     }

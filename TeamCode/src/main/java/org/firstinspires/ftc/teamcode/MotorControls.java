@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 ///Exposes motor functionality
 public final class MotorControls {
     /// States the motors can be in
+    boolean slowMode = false;
     enum STATE {
         IDLE, // Not moving
         MOVING, // Moving using 360 degree range of motion
@@ -61,7 +62,7 @@ public final class MotorControls {
         // Linear combination of wheels at pi/4 angle
         float c1 = -dir.x - dir.y;
         float c2 = -dir.x + dir.y;
-        currentPower = new MotorPower(c2, -c1, c1, c2);
+        currentPower = new MotorPower(-c2, c1, c1, -c2);
     }
 
     /// Sets the current power to rotate about the robot's self axis
@@ -70,7 +71,7 @@ public final class MotorControls {
         ur.setDirection(DcMotor.Direction.REVERSE);
         ll.setDirection(DcMotor.Direction.FORWARD);
         lr.setDirection(DcMotor.Direction.FORWARD);*/
-        currentPower = new MotorPower(-power, -power, power, power);
+        currentPower = new MotorPower(power, -power, power, -power);
     }
 
     public MotorControls(IMotor _ul, IMotor _ur, IMotor _ll, IMotor _lr, Telemetry _telemetry) {
@@ -82,7 +83,7 @@ public final class MotorControls {
         telemetry = _telemetry;
     }
 
-    public void loop(Vec2Rot input) {
+    public void loop(Vec2Rot input, boolean slow) {
         // Gets the direction the player is holding the left stick
         Vec2 dir = input.toVec2();
         // Gets the power the player is holding the right stick on it's horizontal axis
@@ -90,12 +91,12 @@ public final class MotorControls {
 
         // If current state is either moving or idle, then the movement direction may be modified
         if (dir.nonzero() && currentState != STATE.ROTATING) {
-            move(dir.scale(0.5f));
+            move(dir.scale(0.75f-(slow?0.25f:0f)));
             currentState = STATE.MOVING;
         }
         // If current state is either rotating or idle, then the rotation power may be modified
         else if (raxis != 0 && currentState != STATE.MOVING) {
-            rotate(raxis * 0.5f);
+            rotate(raxis * (0.75f-(slow?0.25f:0f)));
             currentState = STATE.ROTATING;
         }
         // If the player is neither moving nor rotating, then the motors should be stopped

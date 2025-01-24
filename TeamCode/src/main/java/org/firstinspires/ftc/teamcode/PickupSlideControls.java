@@ -23,7 +23,7 @@ public class PickupSlideControls {
         up = false;
     }
     void goUp() {
-        setPower(0.8f);
+        setPower(1f);
         up = true;
 
     }

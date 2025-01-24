@@ -36,7 +36,7 @@ public class TestingTeleop extends OpMode {
 
     @Override
     public void loop() {
-        robot.loop(new Vec2Rot(g1.leftStick(), g1.rightStick().x), g2.leftStickY(), (g2.pressedA() ? -1 : 0)  + (g2.pressedB() ? 1 : 0),(g2.pressedX() ? -1 : 0)  + (g2.pressedY() ? 1 : 0), (int)Math.signum(g2.rightStickY()), g2.bumper(), (int)g2.trigger(), g2.horizontalDPad(), (float) time.seconds());
+        robot.loop(new Vec2Rot(g1.leftStick(), g1.rightStick().x), g1.trigger() != 0, g2.leftStickY(), (g2.pressedA() ? -1 : 0)  + (g2.pressedB() ? 1 : 0),(g2.pressedX() ? -1 : 0)  + (g2.pressedY() ? 1 : 0), (int)Math.signum(g2.rightStickY()), g2.bumper(), (int)g2.trigger(), g2.horizontalDPad(), (float) time.seconds());
         time.reset();
         //robot.motorTest.loop(g1.pressedA(), g1.pressedB(), g1.pressedX(), g1.pressedY());
     }

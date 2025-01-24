@@ -14,11 +14,12 @@ public class FloorClawRotationControls {
     }
 
     void open() {
-        c.setPower(0.3f);
+        c.setPower(0f);
+        System.out.println("Opening");
         isOpen = true;
     }
     void close() {
-        c.setPower(-1);
+        c.setPower(1);
         isOpen = false;
     }
 
@@ -27,7 +28,8 @@ public class FloorClawRotationControls {
         /*float p = (1 + Math.signum(power)) / 2f;
         c.setPower(p);*/
         telemetry.addData("BYE", power);
-        if (power > 0 && !isOpen) {open();}
-        else if (power < 0 && isOpen) {close();}
+        /*if (power > 0 && !isOpen) {open();}
+        else if (power < 0 && isOpen) {close();}*/
+        c.setPower((power + 1)/2f);
     }
 }
