@@ -42,9 +42,9 @@ public class DCMotor implements IMotor {
 
     @Override
     public int getPosition() {
-        assert usingEncoder;
         return motor.getCurrentPosition();
     }
+
     @Override
     public void setVelocity(float velocity_ticksPerSecond) {
         setPower(velocity_ticksPerSecond * 60 / (spec.noLoadSpeed * spec.encoderResolution));

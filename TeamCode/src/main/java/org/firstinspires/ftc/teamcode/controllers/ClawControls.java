@@ -24,6 +24,26 @@ public class ClawControls {
         c.setPower(start);
     }
 
+    public void ensureClosed() {
+        if (toggle.state) {
+            close();
+            toggle.state = true;
+        }
+    }
+
+    public void openAfter(int delay_ms) {
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        open();
+                        toggle.state = true;
+                    }
+                },
+                delay_ms
+        );
+    }
+
     public void loop(boolean power) {
         boolean released = toggle.released;
         toggle.loop(power);

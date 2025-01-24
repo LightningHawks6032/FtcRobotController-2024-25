@@ -8,10 +8,13 @@ public class PickupSlideControls {
     Telemetry telemetry;
     boolean up;
 
-    public PickupSlideControls(IMotor _cl, IMotor _cr, Telemetry _telemetry) {
+    ClawControls claw;
+
+    public PickupSlideControls(IMotor _cl, IMotor _cr, ClawControls _claw, Telemetry _telemetry) {
         cr = _cr;
         cl = _cl;
         telemetry = _telemetry;
+        claw = _claw;
         up = false;
     }
     void setPower(float p) {
@@ -29,9 +32,17 @@ public class PickupSlideControls {
 
     }
 
-    public void loop (int power) {
-        if (power < 0 && !up) {goUp();}
-        else if (power > 0 && up) {goDown();}
+    public void loop (int slidePower, boolean clawPower) {
+        if (slidePower < 0 && !up) {
+            goUp();
+            claw.ensureClosed();
+        }
+        else if (slidePower > 0 && up) {
+            goDown();
+            claw.ensureClosed();
+            claw.openAfter(2500);
+        }
+        claw.loop(clawPower);
     }
 
 }

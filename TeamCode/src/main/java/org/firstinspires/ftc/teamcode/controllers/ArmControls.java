@@ -8,11 +8,11 @@ public class ArmControls {
 
     IMotor sr, sl;
     Telemetry telemetry;
-
     public ArmControls(IMotor _sr, IMotor _sl, Telemetry _telemetry) {
         sr = _sr;
         sl = _sl;
         telemetry = _telemetry;
+
     }
 
     void moveWithPower(float power) {
@@ -21,6 +21,6 @@ public class ArmControls {
     }
 
     public void loop(float power) {
-        moveWithPower(power / 2f);
+        moveWithPower(power * 075f);
     }
 }

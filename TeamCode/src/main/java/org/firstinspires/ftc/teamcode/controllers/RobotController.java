@@ -17,8 +17,8 @@ public class RobotController {
     IMotor moveMotorUpRight;
     IMotor moveMotorLowLeft;
     IMotor moveMotorLowRight;
-    IMotor slideRight;
-    IMotor slideLeft;
+    DCMotor slideRight;
+    DCMotor slideLeft;
     IMotor hangClaw;
     IMotor pickUpClawLeft;
     IMotor pickUpClawRight;
@@ -63,7 +63,7 @@ public class RobotController {
         armControls = new ArmControls(slideLeft, slideRight, telemetry);
         hangClawControls = new ClawControls(hangClaw, -0.1f, 0.3f, telemetry);
         horizontalSlideControls = new HorizontalSlideControls(horizontalSlide, telemetry);
-        pickupSlideControls = new PickupSlideControls(pickUpClawLeft, pickUpClawRight, telemetry);
+        pickupSlideControls = new PickupSlideControls(pickUpClawLeft, pickUpClawRight, hangClawControls, telemetry);
 
         floorClawControls = new ClawControls(floorClaw, 0.5f, 0.65f, telemetry);
         floorClawRotationControls = new FloorClawRotationControls(floorClawRotation, telemetry);
@@ -77,9 +77,8 @@ public class RobotController {
     public void loop(Vec2Rot moveDirection, float slowMode, float verticalArmControlPower, int horizontalSlideControlPower, int pickUpSlideControlPower, boolean floorClawControlPower, int floorClawRotationControlPower, boolean hangClawPower) {
         motorControls.loop(moveDirection, slowMode);
         armControls.loop(verticalArmControlPower);
-        hangClawControls.loop(hangClawPower);
         horizontalSlideControls.loop(horizontalSlideControlPower);
-        pickupSlideControls.loop(pickUpSlideControlPower);
+        pickupSlideControls.loop(pickUpSlideControlPower, hangClawPower);
         floorClawControls.loop(floorClawControlPower);
         floorClawRotationControls.loop(floorClawRotationControlPower);
     }
