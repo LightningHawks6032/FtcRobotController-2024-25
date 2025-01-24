@@ -1,6 +1,6 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.hardware;
 
-import static org.firstinspires.ftc.teamcode.DCMotor.GOBILDA_5000_0002_0001;
+import static org.firstinspires.ftc.teamcode.hardware.DCMotor.GOBILDA_5000_0002_0001;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 

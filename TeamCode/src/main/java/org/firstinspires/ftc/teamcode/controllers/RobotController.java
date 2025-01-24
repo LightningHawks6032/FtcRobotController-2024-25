@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.controllers;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -6,6 +6,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Tests;
+import org.firstinspires.ftc.teamcode.Vec2Rot;
+import org.firstinspires.ftc.teamcode.hardware.ContinuousServo;
+import org.firstinspires.ftc.teamcode.hardware.DCMotor;
+import org.firstinspires.ftc.teamcode.hardware.IMotor;
 
 public class RobotController {
     IMotor moveMotorUpLeft;
@@ -22,14 +27,12 @@ public class RobotController {
 
     public MotorControls motorControls;
     public ArmControls armControls;
-    public HangClawControls hangClawControls;
+    public ClawControls hangClawControls;
     public HorizontalSlideControls horizontalSlideControls;
     public PickupSlideControls pickupSlideControls;
-    public FloorClawControls floorClawControls;
+    public ClawControls floorClawControls;
     public FloorClawRotationControls floorClawRotationControls;
     Telemetry telemetry;
-    // TODO: PickupSlideControls
-    Tests.MotorTest motorTest;
     public RobotController(HardwareMap hardwareMap, Telemetry _telemetry){
 
 
@@ -44,41 +47,36 @@ public class RobotController {
         System.out.println( hardwareMap.servo.toString());
         slideLeft = new DCMotor(hardwareMap.get(DcMotor.class, "sl" ), null, DcMotorSimple.Direction.FORWARD);
         slideRight = new DCMotor(hardwareMap.get(DcMotor.class, "sr" ), null, DcMotorSimple.Direction.REVERSE);
-        hangClaw = new ContinuousServo(hardwareMap.servo.get("hangClaw"));//DebugMotor("cl", telemetry, null);
+        hangClaw = new ContinuousServo(hardwareMap.servo.get("hangClaw"));
         Servo pcl = hardwareMap.servo.get("pcl");
         pcl.setDirection(Servo.Direction.REVERSE);
         Servo pcr = hardwareMap.servo.get("pcr");
         pcr.setDirection(Servo.Direction.REVERSE);
-        pickUpClawLeft = new ContinuousServo(pcl);//DebugMotor("cr", telemetry, null);
-        pickUpClawRight = new ContinuousServo(pcr);//DebugMotor("cr", telemetry, null);
+        pickUpClawLeft = new ContinuousServo(pcl);
+        pickUpClawRight = new ContinuousServo(pcr);
         horizontalSlide = new DCMotor(hardwareMap.dcMotor.get("hs"), null, DcMotorSimple.Direction.FORWARD);
 
-        Servo fc = hardwareMap.servo.get("fc");
-        floorClaw = new ContinuousServo(fc);
+        floorClaw = new ContinuousServo(hardwareMap.servo.get("fc"));
         floorClawRotation = new ContinuousServo(hardwareMap.servo.get("fcr"));
-
-        //floor claw, floor claw rotation
 
         motorControls = new MotorControls(moveMotorUpLeft, moveMotorUpRight, moveMotorLowLeft, moveMotorLowRight, telemetry);
         armControls = new ArmControls(slideLeft, slideRight, telemetry);
-        hangClawControls = new HangClawControls(hangClaw, telemetry);
+        hangClawControls = new ClawControls(hangClaw, -0.1f, 0.3f, telemetry);
         horizontalSlideControls = new HorizontalSlideControls(horizontalSlide, telemetry);
         pickupSlideControls = new PickupSlideControls(pickUpClawLeft, pickUpClawRight, telemetry);
 
-        floorClawControls = new FloorClawControls(floorClaw, telemetry);
+        floorClawControls = new ClawControls(floorClaw, 0.5f, 0.65f, telemetry);
         floorClawRotationControls = new FloorClawRotationControls(floorClawRotation, telemetry);
 
-        //motorTest = new Tests.MotorTest(moveMotorUpLeft, moveMotorUpRight, moveMotorLowRight, moveMotorLowLeft, telemetry);
     }
 
     public void init() {
         motorControls.init();
-        armControls.init();
     }
 
-    public void loop(Vec2Rot moveDirection, boolean slowMode, float verticalArmControlPower, int hangClawControlPower, int horizontalSlideControlPower, int pickUpSlideControlPower, int floorClawControlPower, int floorClawRotationControlPower, int hangClawPower, float dt) {
+    public void loop(Vec2Rot moveDirection, float slowMode, float verticalArmControlPower, int horizontalSlideControlPower, int pickUpSlideControlPower, boolean floorClawControlPower, int floorClawRotationControlPower, boolean hangClawPower) {
         motorControls.loop(moveDirection, slowMode);
-        armControls.loop(verticalArmControlPower, dt);
+        armControls.loop(verticalArmControlPower);
         hangClawControls.loop(hangClawPower);
         horizontalSlideControls.loop(horizontalSlideControlPower);
         pickupSlideControls.loop(pickUpSlideControlPower);

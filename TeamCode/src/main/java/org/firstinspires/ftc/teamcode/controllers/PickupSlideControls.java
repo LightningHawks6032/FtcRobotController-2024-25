@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.controllers;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.hardware.IMotor;
 
 public class PickupSlideControls {
     IMotor cr, cl;
@@ -29,12 +30,8 @@ public class PickupSlideControls {
     }
 
     public void loop (int power) {
-        /*float p = (1 + Math.signum(power)) / 2f;
-        cr.setPower(p);
-        cl.setPower(1-p);*/
-        if (-power > 0 && !up) {goUp();}
-        else if (-power < 0 && up) {goDown();}
-        telemetry.addData("powr", cl.getPosition() + ", " + cr.getPosition());
+        if (power < 0 && !up) {goUp();}
+        else if (power > 0 && up) {goDown();}
     }
 
 }

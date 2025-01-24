@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-public class DCMotor implements IMotor{
+public class DCMotor implements IMotor {
     DcMotor motor;
     MotorSpec spec;
     boolean usingEncoder;

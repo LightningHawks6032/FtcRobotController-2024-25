@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.controllers;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.hardware.IMotor;
 
 public class HorizontalSlideControls {
     IMotor c;
@@ -12,7 +13,6 @@ public class HorizontalSlideControls {
     }
 
     public void loop(int power) {
-        float p = (1 + Math.signum(power)) / 2f;
         c.setPower(power/2f);
     }
 }

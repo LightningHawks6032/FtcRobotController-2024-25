@@ -1,5 +1,8 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.controllers;
 import com.qualcomm.robotcore.hardware.Gamepad;
+
+import org.firstinspires.ftc.teamcode.Vec2;
+import org.firstinspires.ftc.teamcode.hardware.IController;
 
 public final class GamepadController  implements IController {
     Gamepad gamepad;
@@ -19,6 +22,7 @@ public final class GamepadController  implements IController {
     public boolean pressedY() {return gamepad.y;}
     public int bumper() {return (gamepad.right_bumper?1:0) - (gamepad.left_bumper?1:0);}
     public float trigger() {return gamepad.right_trigger - gamepad.left_trigger;}
+    public float leftTrigger() {return gamepad.left_trigger;}
     public int horizontalDPad() {return (gamepad.dpad_right?1:0) - (gamepad.dpad_left?1:0);}
     public GamepadController(Gamepad _gamepad) {
         gamepad = _gamepad;

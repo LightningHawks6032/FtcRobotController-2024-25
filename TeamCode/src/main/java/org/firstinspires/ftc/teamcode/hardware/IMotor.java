@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode;
-
-import com.qualcomm.robotcore.hardware.Servo;
+package org.firstinspires.ftc.teamcode.hardware;
 
 public interface IMotor {
     void setPower(float power);
