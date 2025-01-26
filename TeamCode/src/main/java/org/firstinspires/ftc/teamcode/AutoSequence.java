@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
 
 import java.util.ArrayList;
@@ -9,6 +10,10 @@ import java.util.ArrayList;
 
 // Sequence of actions robot takes during auto
 public class AutoSequence {
+    Telemetry telemetry;
+    public AutoSequence(Telemetry _telemetry) {
+        telemetry = _telemetry;
+    }
     public static class ActionInput {
         public Vec2Rot moveDirection;
         public float slowMode;
@@ -18,6 +23,7 @@ public class AutoSequence {
         public boolean floorClawControlPower;
         public int floorClawRotationControlPower;
         public boolean hangClawPower;
+        public boolean lock;
 
         public ActionInput() {
 
@@ -27,12 +33,19 @@ public class AutoSequence {
             horizontalSlideControlPower = 0;
             pickUpSlideControlPower = 0;
             floorClawControlPower = false;
+            lock = false;
         }
     }
 
     public static class Action {
         public ActionInput input;
         public float duration;
+
+        public Action() {
+
+            input = new ActionInput();
+            duration = 0;
+        }
     }
 
     ArrayList<Action> actions;
@@ -40,11 +53,14 @@ public class AutoSequence {
     int idx;
 
     ElapsedTime timer;
+
+    public boolean done;
     public void init(ArrayList<Action> _actions) {
         actions = _actions;
         timer = new ElapsedTime();
         timer.reset();
         idx = 0;
+        done = false;
     }
 
     public Action getCurrentAction() {
@@ -52,8 +68,12 @@ public class AutoSequence {
     }
 
     public void loop() {
-        if (timer.time() >= actions.get(idx).duration) {
-            idx++;
+        if(!done) {
+            if (timer.time() >= actions.get(idx).duration) {
+                idx++;
+                done = idx >= actions.size();
+                timer.reset();
+            }
         }
     }
 }

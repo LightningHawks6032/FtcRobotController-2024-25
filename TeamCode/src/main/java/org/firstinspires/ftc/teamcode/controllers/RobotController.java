@@ -62,7 +62,7 @@ public class RobotController {
 
         motorControls = new MotorControls(moveMotorUpLeft, moveMotorUpRight, moveMotorLowLeft, moveMotorLowRight, telemetry);
         armControls = new ArmControls(slideLeft, slideRight, telemetry);
-        hangClawControls = new ClawControls(hangClaw, -0.1f, 0.3f, telemetry);
+        hangClawControls = new ClawControls(hangClaw, -0.1f, 0.35f, telemetry);
         horizontalSlideControls = new HorizontalSlideControls(horizontalSlide, telemetry);
         pickupSlideControls = new PickupSlideControls(pickUpClawLeft, pickUpClawRight, hangClawControls, telemetry);
 

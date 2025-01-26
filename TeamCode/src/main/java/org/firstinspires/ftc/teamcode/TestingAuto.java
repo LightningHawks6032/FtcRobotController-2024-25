@@ -13,30 +13,34 @@ public class TestingAuto extends OpMode {
     RobotController robot;
     ElapsedTime timer;
     AutoSequence seq;
-
+    ArrayList<AutoSequence.Action> actions;
 
     @Override
     public void init() {
         robot = new RobotController(hardwareMap, telemetry);
         robot.init();
-        seq = new AutoSequence();
+        seq = new AutoSequence(telemetry);
 
         AutoSequence.Action a1 = new AutoSequence.Action();
         a1.input = new AutoSequence.ActionInput();
         a1.input.moveDirection = new Vec2Rot(1, 0, 0);
-        a1.duration = 1;
+        a1.duration = 1.5f;
 
-        ArrayList<AutoSequence.Action> actions = new ArrayList<>();
+        actions = new ArrayList<>();
         actions.add(a1);
+    }
 
+
+    @Override
+    public void start() {
         seq.init(actions);
     }
 
     @Override
     public void loop() {
-        System.out.println(time);
-        seq.loop();
-
-        robot.loop(seq.getCurrentAction().input);
+        if (!seq.done) {
+            seq.loop();
+            robot.loop(seq.getCurrentAction().input);
+        }
     }
 }

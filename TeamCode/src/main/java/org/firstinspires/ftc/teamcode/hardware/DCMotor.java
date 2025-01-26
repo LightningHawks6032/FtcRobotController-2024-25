@@ -54,5 +54,12 @@ public class DCMotor implements IMotor {
     public float getVelocity() {
         return getPower() * spec.noLoadSpeed * spec.encoderResolution / 60;
     }
+
+    public void lock() {
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setTargetPosition(motor.getCurrentPosition());
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor.setPower(1f);
+    }
 }
 

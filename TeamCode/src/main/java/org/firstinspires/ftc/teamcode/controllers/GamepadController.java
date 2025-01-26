@@ -24,6 +24,7 @@ public final class GamepadController  implements IController {
     public float trigger() {return gamepad.right_trigger - gamepad.left_trigger;}
     public float leftTrigger() {return gamepad.left_trigger;}
     public int horizontalDPad() {return (gamepad.dpad_right?1:0) - (gamepad.dpad_left?1:0);}
+    public boolean leftBumper() {return gamepad.left_bumper;}
     public GamepadController(Gamepad _gamepad) {
         gamepad = _gamepad;
     }
