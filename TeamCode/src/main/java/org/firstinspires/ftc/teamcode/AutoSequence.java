@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
+import org.firstinspires.ftc.teamcode.scheduling.ActionInput;
 
 import java.util.ArrayList;
 
@@ -14,28 +15,8 @@ public class AutoSequence {
     public AutoSequence(Telemetry _telemetry) {
         telemetry = _telemetry;
     }
-    public static class ActionInput {
-        public Vec2Rot moveDirection;
-        public float slowMode;
-        public float verticalArmControlPower;
-        public int horizontalSlideControlPower;
-        public int pickUpSlideControlPower;
-        public boolean floorClawControlPower;
-        public int floorClawRotationControlPower;
-        public boolean hangClawPower;
-        public boolean lock;
 
-        public ActionInput() {
 
-            moveDirection = new Vec2Rot(0, 0, 0);
-            slowMode = 0;
-            verticalArmControlPower = 0;
-            horizontalSlideControlPower = 0;
-            pickUpSlideControlPower = 0;
-            floorClawControlPower = false;
-            lock = false;
-        }
-    }
 
     public static class Action {
         public ActionInput input;

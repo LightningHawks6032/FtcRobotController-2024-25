@@ -2,16 +2,12 @@ package org.firstinspires.ftc.teamcode;
 //System.out.println("skibidi rizz"); :)
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.controllers.ClawControls;
-import org.firstinspires.ftc.teamcode.controllers.ContinuousMotorControls;
 import org.firstinspires.ftc.teamcode.controllers.GamepadController;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
-import org.firstinspires.ftc.teamcode.hardware.ContinuousServo;
-import org.firstinspires.ftc.teamcode.hardware.IMotor;
+import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 
-@TeleOp(name = "TeleOp")
+@TeleOp(name = "TeleOp", group="Comp")
 public class TestingTeleop extends OpMode {
     GamepadController g1, g2;
     RobotController robot;
@@ -23,6 +19,8 @@ public class TestingTeleop extends OpMode {
 
         robot = new RobotController(hardwareMap, telemetry);
         robot.init();
+
+        ActionSequencer.StickAction.Data a1 = new ActionSequencer.StickAction.DataBuilder().stick(new Vec2(1, 0)).get();
     }
 
     @Override

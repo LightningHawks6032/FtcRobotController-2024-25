@@ -16,7 +16,7 @@ public class WinchControls {
     }
 
     public void lock() {
-        c.lock();
+        //c.lock();
     }
     boolean locked;
     public void loop(float power, boolean lock) {

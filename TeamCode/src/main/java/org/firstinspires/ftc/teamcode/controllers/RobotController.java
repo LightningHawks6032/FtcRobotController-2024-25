@@ -7,11 +7,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.AutoSequence;
-import org.firstinspires.ftc.teamcode.Tests;
 import org.firstinspires.ftc.teamcode.Vec2Rot;
 import org.firstinspires.ftc.teamcode.hardware.ContinuousServo;
 import org.firstinspires.ftc.teamcode.hardware.DCMotor;
 import org.firstinspires.ftc.teamcode.hardware.IMotor;
+import org.firstinspires.ftc.teamcode.scheduling.ActionInput;
 
 public class RobotController {
     IMotor moveMotorUpLeft;
@@ -33,7 +33,7 @@ public class RobotController {
     public PickupSlideControls pickupSlideControls;
     public ClawControls floorClawControls;
     public FloorClawRotationControls floorClawRotationControls;
-    Telemetry telemetry;
+    public Telemetry telemetry;
     public RobotController(HardwareMap hardwareMap, Telemetry _telemetry){
 
 
@@ -84,7 +84,7 @@ public class RobotController {
         floorClawRotationControls.loop(floorClawRotationControlPower);
     }
 
-    public void loop(AutoSequence.ActionInput input) {
+    public void loop(ActionInput input) {
         loop(input.moveDirection, input.slowMode, input.verticalArmControlPower, input.horizontalSlideControlPower, input.pickUpSlideControlPower, input.floorClawControlPower, input.floorClawRotationControlPower, input.hangClawPower);
     }
 }

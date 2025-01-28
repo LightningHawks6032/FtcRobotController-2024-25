@@ -5,10 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
+import org.firstinspires.ftc.teamcode.scheduling.ActionInput;
 
 import java.util.ArrayList;
 
-@Autonomous
+@Autonomous(name = "Auto", group="Comp")
 public class TestingAuto extends OpMode {
     RobotController robot;
     ElapsedTime timer;
@@ -22,7 +23,7 @@ public class TestingAuto extends OpMode {
         seq = new AutoSequence(telemetry);
 
         AutoSequence.Action a1 = new AutoSequence.Action();
-        a1.input = new AutoSequence.ActionInput();
+        a1.input = new ActionInput();
         a1.input.moveDirection = new Vec2Rot(1, 0, 0);
         a1.duration = 1.5f;
 
