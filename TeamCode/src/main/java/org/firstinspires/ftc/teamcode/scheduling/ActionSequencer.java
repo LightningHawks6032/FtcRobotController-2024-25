@@ -40,4 +40,24 @@ public class ActionSequencer {
             }
         }
     }
+    public static class ButtonAction implements IAction<ButtonAction.Data> {
+        public void loop(RobotController robot, Data data) {}
+        public static class Data {
+            public boolean pressed;
+        }
+        public static class DataBuilder {
+            Data action;
+            public DataBuilder() {
+                action = new Data();
+                action.pressed = false;
+            }
+            public DataBuilder pressed(boolean _pressed) {
+                action.pressed = _pressed;
+                return this;
+            }
+            public Data get() {
+                return action;
+            }
+        }
+    }
 }

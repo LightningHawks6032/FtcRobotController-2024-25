@@ -7,13 +7,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.controllers.GamepadController;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
-import org.firstinspires.ftc.teamcode.scheduling.InputResponse;
+import org.firstinspires.ftc.teamcode.scheduling.InputResponseManager;
 
 @TeleOp(name = "Scheduling Test", group = "Test")
 public class SchedulingTest extends OpMode {
 
     GamepadController g1;
-    InputResponse.InputResponseManager manager;
+    InputResponseManager manager;
     RobotController robot;
     static Telemetry _telemetry;
 
@@ -26,7 +26,7 @@ public class SchedulingTest extends OpMode {
     @Override
     public void init() {
         g1 = new GamepadController(gamepad1);
-        manager = new InputResponse.Builder(g1, robot).leftStickAction(
+        manager = new InputResponseManager.Builder(g1, robot).leftStickAction(
                 new TelemetryOnStick()
         ).get();
         _telemetry = telemetry;
