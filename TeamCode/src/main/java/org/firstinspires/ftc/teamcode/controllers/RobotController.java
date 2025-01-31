@@ -75,9 +75,9 @@ public class RobotController {
         motorControls.init();
     }
 
-    public void loop(Vec2Rot moveDirection, float slowMode, float verticalArmControlPower, int horizontalSlideControlPower, int pickUpSlideControlPower, boolean floorClawControlPower, int floorClawRotationControlPower, boolean hangClawPower) {
+    public void loop(Vec2Rot moveDirection, float slowMode, float verticalArmControlPower, int horizontalSlideControlPower, int pickUpSlideControlPower, boolean floorClawControlPower, int floorClawRotationControlPower, boolean hangClawPower, int vDPad, boolean lockArm) {
         motorControls.loop(moveDirection, slowMode);
-        armControls.loop(verticalArmControlPower);
+        armControls.loop(verticalArmControlPower, vDPad, lockArm);
         horizontalSlideControls.loop(horizontalSlideControlPower);
         pickupSlideControls.loop(pickUpSlideControlPower, hangClawPower);
         floorClawControls.loop(floorClawControlPower);
@@ -85,6 +85,6 @@ public class RobotController {
     }
 
     public void loop(ActionInput input) {
-        loop(input.moveDirection, input.slowMode, input.verticalArmControlPower, input.horizontalSlideControlPower, input.pickUpSlideControlPower, input.floorClawControlPower, input.floorClawRotationControlPower, input.hangClawPower);
+        loop(input.moveDirection, input.slowMode, input.verticalArmControlPower, input.horizontalSlideControlPower, input.pickUpSlideControlPower, input.floorClawControlPower, input.floorClawRotationControlPower, input.hangClawPower, 0, false);
     }
 }

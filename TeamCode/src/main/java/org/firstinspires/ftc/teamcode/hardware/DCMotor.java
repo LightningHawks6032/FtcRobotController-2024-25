@@ -7,7 +7,7 @@ public class DCMotor implements IMotor {
      public class Encoder {
         public boolean runningToPosition = false;
         public void setPosition(int position) {
-            if (!usingEncoder) {System.err.println("Tried to set position on non-encoder motor" + motor.getDeviceName()); return;}
+            if (!usingEncoder) {System.err.println("Tried to set position on non-encoder motor" + motor.getDeviceName());}
                 motor.setTargetPosition(position);
                 motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 runningToPosition = true;
@@ -54,7 +54,7 @@ public class DCMotor implements IMotor {
         motor = _motor;
         motor.setDirection(dir);
         spec = _spec == null ? GOBILDA_5000_0002_0001 : _spec;
-        usingEncoder = false;
+        usingEncoder = true;
         encoder = new Encoder();
     }
     @Override

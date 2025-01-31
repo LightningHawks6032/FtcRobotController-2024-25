@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.controllers.RobotController;
 
         public ActionSequencer.ActionGroup<ActionSequencer.StickAction.Data> leftStickAction;
         public ActionSequencer.ActionGroup<ActionSequencer.StickAction.Data> rightStickAction;
+        public ActionSequencer.ActionGroup<ActionSequencer.StickAction.Data> dPadAction;
         public ActionSequencer.ActionGroup<ActionSequencer.ButtonAction.Data> AAction;
         public ActionSequencer.ActionGroup<ActionSequencer.ButtonAction.Data> BAction;
         public ActionSequencer.ActionGroup<ActionSequencer.ButtonAction.Data> XAction;
@@ -49,6 +50,13 @@ import org.firstinspires.ftc.teamcode.controllers.RobotController;
                     .get();
             ActionSequencer.execute(robot, BAction, BData);
         }
+        void onDPad() {
+            ActionSequencer.StickAction.Data data = new ActionSequencer.StickAction.DataBuilder()
+                    .stick(gamepad.DPad())
+                    .get();
+            ActionSequencer.execute(robot, dPadAction, data);
+        }
+
 
         public void loop() {
             onLeftStick();
