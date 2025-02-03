@@ -76,7 +76,7 @@ public class RobotController {
     }
 
     public void loop(Vec2Rot moveDirection, float slowMode, float verticalArmControlPower, int horizontalSlideControlPower, int pickUpSlideControlPower, boolean floorClawControlPower, int floorClawRotationControlPower, boolean hangClawPower, int vDPad, boolean lockArm) {
-        motorControls.loop(moveDirection, slowMode);
+        //motorControls.loop(moveDirection, slowMode);
         armControls.loop(verticalArmControlPower, vDPad, lockArm);
         horizontalSlideControls.loop(horizontalSlideControlPower);
         pickupSlideControls.loop(pickUpSlideControlPower, hangClawPower);

@@ -16,9 +16,15 @@ public final class MotorControls {
 
         @Override
         public void loop(RobotController robot, ActionSequencer.StickAction.Data data) {
-            if (data.stick.nonzero() && currentState != STATE.ROTATING) {
-                move(data.stick.scale(MAXSPEED));
-                currentState = STATE.MOVING;
+            if (currentState != STATE.ROTATING) {
+                if (data.stick.nonzero()) {
+                    move(data.stick.scale(MAXSPEED));
+                    currentState = STATE.MOVING;
+                }
+                else {
+                    currentState = STATE.IDLE;
+                    zeroAllMotors();
+                }
             }
         }
     }
@@ -27,24 +33,26 @@ public final class MotorControls {
 
         @Override
         public void loop(RobotController robot, ActionSequencer.StickAction.Data data) {
-            if (data.stick.x != 0 && currentState != STATE.MOVING) {
-                rotate(data.stick.x * MAXSPEED);
-                currentState = STATE.ROTATING;
+            if (currentState != STATE.MOVING) {
+                if (data.stick.x != 0) {
+                    rotate(data.stick.x * MAXSPEED);
+                    currentState = STATE.ROTATING;
+                }
+                else {
+                    currentState = STATE.IDLE;
+                    zeroAllMotors();
+                }
             }
         }
     }
 
     public class SlowModeAction extends ActionSequencer.ButtonAction {
-        Toggle slowToggle = new Toggle(false);
         @Override
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data) {
-            slowToggle.loop(data.pressed);
-            if (slowToggle.state) {
+            if (data.pressed) {
                 slowFactor = 0.25f;
             }
-            else {
-                slowFactor = 1f;
-            }
+            else {slowFactor = 1f;}
         }
     }
 
