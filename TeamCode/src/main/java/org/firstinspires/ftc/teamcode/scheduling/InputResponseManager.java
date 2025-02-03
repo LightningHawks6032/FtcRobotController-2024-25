@@ -77,6 +77,7 @@ import org.firstinspires.ftc.teamcode.controllers.RobotController;
                 inputResponseManager.leftStickAction = new ActionSequencer.ActionGroup<>();
                 inputResponseManager.rightStickAction = new ActionSequencer.ActionGroup<>();
             }
+
             @SafeVarargs
             public final Builder leftStickAction(IAction<ActionSequencer.StickAction.Data>... _leftStickAction) {
                 inputResponseManager.leftStickAction.actions = _leftStickAction;

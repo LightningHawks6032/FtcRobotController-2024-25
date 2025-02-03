@@ -1,12 +1,69 @@
 package org.firstinspires.ftc.teamcode.controllers;
 
+import androidx.annotation.NonNull;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Toggle;
 import org.firstinspires.ftc.teamcode.Vec2;
 import org.firstinspires.ftc.teamcode.Vec2Rot;
 import org.firstinspires.ftc.teamcode.hardware.IMotor;
-
+import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 ///Exposes motor functionality
 public final class MotorControls {
+
+
+    public class MoveAction extends ActionSequencer.StickAction {
+
+        @Override
+        public void loop(RobotController robot, ActionSequencer.StickAction.Data data) {
+            if (data.stick.nonzero() && currentState != STATE.ROTATING) {
+                move(data.stick.scale(MAXSPEED));
+                currentState = STATE.MOVING;
+            }
+        }
+    }
+
+    public class RotateAction extends ActionSequencer.StickAction {
+
+        @Override
+        public void loop(RobotController robot, ActionSequencer.StickAction.Data data) {
+            if (data.stick.x != 0 && currentState != STATE.MOVING) {
+                rotate(data.stick.x * MAXSPEED);
+                currentState = STATE.ROTATING;
+            }
+        }
+    }
+
+    public class SlowModeAction extends ActionSequencer.ButtonAction {
+        Toggle slowToggle = new Toggle(false);
+        @Override
+        public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data) {
+            slowToggle.loop(data.pressed);
+            if (slowToggle.state) {
+                slowFactor = 0.25f;
+            }
+            else {
+                slowFactor = 1f;
+            }
+        }
+    }
+
+    public MoveAction getMoveAction() {
+        return moveAction;
+    }
+
+    public RotateAction getRotateAction() {
+        return rotateAction;
+    }
+
+    public SlowModeAction getSlowModeAction() {
+        return slowModeAction;
+    }
+
+    MoveAction moveAction;
+    RotateAction rotateAction;
+    SlowModeAction slowModeAction;
+
     /// States the motors can be in
     enum STATE {
         IDLE, // Not moving
@@ -30,19 +87,23 @@ public final class MotorControls {
             this(0, 0, 0, 0);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "ul: " + ul + ", ur: " + ur + ", ll: " + ll + ", lr: " + lr;
         }
     }
 
-    IMotor ul, ur, ll, lr; // up left, up right, low left, low right
+    IMotor ul, ur, ll, lr; //up left, up right, low left, low right
 
     /// Current power that will be applied to the motors
     MotorPower currentPower;
     /// Current state of motion
     STATE currentState;
     Telemetry telemetry;
+
+    float slowFactor = 1f;
+    final float MAXSPEED = 0.75f;
 
     /// Sets the current power to 0 for all motors
     void zeroAllMotors() {
@@ -67,10 +128,6 @@ public final class MotorControls {
 
     /// Sets the current power to rotate about the robot's self axis
     void rotate(float power) {
-        /*ul.setDirection(DcMotor.Direction.REVERSE);
-        ur.setDirection(DcMotor.Direction.REVERSE);
-        ll.setDirection(DcMotor.Direction.FORWARD);
-        lr.setDirection(DcMotor.Direction.FORWARD);*/
         currentPower = new MotorPower(power, -power, power, -power);
     }
 
@@ -115,5 +172,9 @@ public final class MotorControls {
     public void init() {
         currentState = STATE.IDLE;
         zeroAllMotors();
+
+        moveAction = new MoveAction();
+        rotateAction = new RotateAction();
+        slowModeAction = new SlowModeAction();
     }
 }

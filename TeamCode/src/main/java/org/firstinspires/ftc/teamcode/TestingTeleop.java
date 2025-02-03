@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.controllers.GamepadController;
+import org.firstinspires.ftc.teamcode.controllers.MotorControls;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 import org.firstinspires.ftc.teamcode.scheduling.InputResponseManager;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.teamcode.scheduling.InputResponseManager;
 public class TestingTeleop extends OpMode {
     GamepadController g1, g2;
     RobotController robot;
-    InputResponseManager g2InputResponse;
+    InputResponseManager g1InputResponse;
 
     @Override
     public void init() {
@@ -22,8 +23,11 @@ public class TestingTeleop extends OpMode {
         robot = new RobotController(hardwareMap, telemetry);
         robot.init();
 
-        //g2InputResponse = new InputResponseManager.Builder(g2, robot).get();
-
+        g1InputResponse = new InputResponseManager.Builder(g1, robot)
+                .leftStickAction(robot.motorControls.getMoveAction())
+                .rightStickAction(robot.motorControls.getRotateAction())
+                .AAction(robot.motorControls.getSlowModeAction())
+                .get();
     }
 
     @Override
