@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.scheduling;
 
 import org.firstinspires.ftc.teamcode.Vec2;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
-
+import java.util.function.Predicate;
 public class ActionSequencer {
     public static <DataType> void execute(RobotController robot, IAction<DataType> action, DataType data) {
         action.loop(robot, data);
@@ -60,37 +60,23 @@ public class ActionSequencer {
             }
         }
     }
-    public static class ExecuteIf <DataType> implements IAction<ExecuteIf.Data<DataType>> {
+    public static class ExecuteIf <DataType> implements IAction<DataType> {
         IAction<DataType> action;
+        public Predicate<DataType> pred;
         @Override
-        public void loop(RobotController robot, Data<DataType> data) {
-            if (data.pred && action != null) {
-                action.loop(robot, data.data);
-            }
-        }
-
-        public static class Data <_DataType> {
-            boolean pred;
-            _DataType data;
-        }
-        public static class DataBuilder <_DataType>{
-            ExecuteIf.Data<_DataType> action;
-            public DataBuilder() {
-                action = new ExecuteIf.Data<>();
-                action.pred = false;
-            }
-            public ExecuteIf.DataBuilder<_DataType> pred(boolean _pred) {
-                action.pred = _pred;
-                return this;
-            }
-            public ExecuteIf.Data<_DataType> get() {
-                return action;
+        public void loop(RobotController robot, DataType data) {
+            if (pred.test(data) && action != null) {
+                action.loop(robot, data);
             }
         }
         public static class Builder <_DataType> {
             ExecuteIf<_DataType> action;
             public Builder<_DataType> action(IAction<_DataType> _action) {
-                action.action = (IAction<_DataType>) _action;
+                action.action = _action;
+                return this;
+            }
+            public Builder<_DataType> predicate(Predicate<_DataType> _pred) {
+                action.pred = _pred;
                 return this;
             }
             public ExecuteIf<_DataType> get() {return action;}
