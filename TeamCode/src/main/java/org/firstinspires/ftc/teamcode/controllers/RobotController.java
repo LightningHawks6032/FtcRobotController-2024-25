@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.AutoSequence;
 import org.firstinspires.ftc.teamcode.Vec2Rot;
 import org.firstinspires.ftc.teamcode.hardware.ContinuousServo;
 import org.firstinspires.ftc.teamcode.hardware.DCMotor;
@@ -24,7 +23,8 @@ public class RobotController {
     IMotor pickUpClawLeft;
     IMotor pickUpClawRight;
     IMotor horizontalSlide;
-    IMotor floorClaw, floorClawRotation;
+    IMotor floorClaw, floorClawRotationLeft, floorClawRotationRight;
+    IMotor floorClawSpin;
 
     public MotorControls motorControls;
     public ArmControls armControls;
@@ -58,7 +58,9 @@ public class RobotController {
         horizontalSlide = new DCMotor(hardwareMap.dcMotor.get("hs"), null, DcMotorSimple.Direction.FORWARD);
 
         floorClaw = new ContinuousServo(hardwareMap.servo.get("fc"));
-        floorClawRotation = new ContinuousServo(hardwareMap.servo.get("fcr"));
+        floorClawRotationLeft = new ContinuousServo(hardwareMap.servo.get("fcr"));
+        floorClawRotationRight = new ContinuousServo(hardwareMap.servo.get("fcl"));
+        floorClawSpin = new ContinuousServo(hardwareMap.servo.get("floorclawspin"));
 
         motorControls = new MotorControls(moveMotorUpLeft, moveMotorUpRight, moveMotorLowLeft, moveMotorLowRight, telemetry);
         armControls = new ArmControls(slideLeft, slideRight, telemetry);
@@ -67,8 +69,7 @@ public class RobotController {
         pickupSlideControls = new PickupSlideControls(pickUpClawLeft, pickUpClawRight, hangClawControls, telemetry);
 
         floorClawControls = new ClawControls(floorClaw, 0.5f, 0.65f, telemetry);
-        floorClawRotationControls = new FloorClawRotationControls(floorClawRotation, telemetry);
-
+        floorClawRotationControls = new FloorClawRotationControls(floorClawRotationLeft, floorClawRotationRight, telemetry);
     }
 
     public void init() {
@@ -77,11 +78,11 @@ public class RobotController {
 
     public void loop(Vec2Rot moveDirection, float slowMode, float verticalArmControlPower, int horizontalSlideControlPower, int pickUpSlideControlPower, boolean floorClawControlPower, int floorClawRotationControlPower, boolean hangClawPower, int vDPad, boolean lockArm) {
         //motorControls.loop(moveDirection, slowMode);
-        armControls.loop(verticalArmControlPower, vDPad, lockArm);
+        //armControls.loop(verticalArmControlPower, vDPad, lockArm);
         horizontalSlideControls.loop(horizontalSlideControlPower);
-        pickupSlideControls.loop(pickUpSlideControlPower, hangClawPower);
-        floorClawControls.loop(floorClawControlPower);
-        floorClawRotationControls.loop(floorClawRotationControlPower);
+        pickupSlideControls.loop(pickUpSlideControlPower, false/*hangClawPower*/);
+        //floorClawControls.loop(floorClawControlPower);
+        floorClawRotationControls.loop(false/*floorClawRotationControlPower*/);
     }
 
     public void loop(ActionInput input) {

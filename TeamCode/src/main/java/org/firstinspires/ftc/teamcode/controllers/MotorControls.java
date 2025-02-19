@@ -16,6 +16,7 @@ public final class MotorControls {
 
         @Override
         public void loop(RobotController robot, ActionSequencer.StickAction.Data data) {
+            robot.telemetry.addData("Motor State", currentState.name());
             if (currentState != STATE.ROTATING) {
                 if (data.stick.nonzero()) {
                     move(data.stick.scale(MAXSPEED));
@@ -26,6 +27,7 @@ public final class MotorControls {
                     zeroAllMotors();
                 }
             }
+            setPower(currentPower);
         }
     }
 

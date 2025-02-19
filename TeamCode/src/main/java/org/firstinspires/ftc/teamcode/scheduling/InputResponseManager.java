@@ -2,7 +2,10 @@ package org.firstinspires.ftc.teamcode.scheduling;
 
 import org.firstinspires.ftc.teamcode.controllers.GamepadController;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
-    public  class InputResponseManager {
+
+import java.util.function.Consumer;
+
+public  class InputResponseManager {
         GamepadController gamepad;
         RobotController robot;
 
@@ -13,6 +16,9 @@ import org.firstinspires.ftc.teamcode.controllers.RobotController;
         public ActionSequencer.ActionGroup<ActionSequencer.ButtonAction.Data> BAction;
         public ActionSequencer.ActionGroup<ActionSequencer.ButtonAction.Data> XAction;
         public ActionSequencer.ActionGroup<ActionSequencer.ButtonAction.Data> YAction;
+
+        LoopGroup loops;
+
         void onLeftStick() {
             ActionSequencer.StickAction.Data leftStickData = new ActionSequencer.StickAction.DataBuilder()
                     .stick(gamepad.leftStick())
@@ -59,23 +65,29 @@ import org.firstinspires.ftc.teamcode.controllers.RobotController;
 
 
         public void loop() {
+            loops.loop(robot);
             onLeftStick();
             onRightStick();
             onA();
             onB();
             onX();
             onY();
+            onDPad();
         }
         public static class Builder {
-            GamepadController gamepad;
-            RobotController robot;
+
             InputResponseManager inputResponseManager;
             public Builder(GamepadController _gamepad, RobotController _robot) {
-                gamepad = _gamepad;
-                robot = _robot;
                 inputResponseManager = new InputResponseManager();
+                inputResponseManager.gamepad = _gamepad;
+                inputResponseManager.robot = _robot;
                 inputResponseManager.leftStickAction = new ActionSequencer.ActionGroup<>();
                 inputResponseManager.rightStickAction = new ActionSequencer.ActionGroup<>();
+                inputResponseManager.AAction = new ActionSequencer.ActionGroup<>();
+                inputResponseManager.BAction = new ActionSequencer.ActionGroup<>();
+                inputResponseManager.XAction = new ActionSequencer.ActionGroup<>();
+                inputResponseManager.YAction = new ActionSequencer.ActionGroup<>();
+                inputResponseManager.dPadAction = new ActionSequencer.ActionGroup<>();
             }
 
             @SafeVarargs
@@ -109,6 +121,18 @@ import org.firstinspires.ftc.teamcode.controllers.RobotController;
                 inputResponseManager.YAction.actions = _YAction;
                 return this;
             }
+            @SafeVarargs
+            public final Builder DPadAction(IAction<ActionSequencer.StickAction.Data>... _dPadAction) {
+                inputResponseManager.dPadAction.actions = _dPadAction;
+                return this;
+            }
+
+            @SafeVarargs
+            public final Builder loops(Consumer<RobotController>... _loops) {
+                inputResponseManager.loops = new LoopGroup(_loops);
+                return this;
+            }
+
 
             public final InputResponseManager get() {
                 return inputResponseManager;

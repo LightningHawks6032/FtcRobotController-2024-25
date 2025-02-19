@@ -11,24 +11,24 @@ public class DCMotor implements IMotor {
                 motor.setTargetPosition(position);
                 motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 runningToPosition = true;
-
         }
         public void resetEncoder() {
 
             if (!usingEncoder) {System.err.println("Tried to reset encoder on non-encoder motor " + motor.getDeviceName()); return;}
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
         public void lock() {
 
-            if (!usingEncoder) {System.err.println("Tried to lock non-encoder motor" + motor.getDeviceName()); return;}
+            if (!usingEncoder) {System.err.println("Tried to lock non-encoder motor" + motor.getDeviceName());}
             setPosition(getPosition());
             setPower(1);
         }
 
         public void unlock() {
 
-            if (!usingEncoder) {System.err.println("Tried to unlock non-encoder motor" + motor.getDeviceName()); return;}
+            if (!usingEncoder) {System.err.println("Tried to unlock non-encoder motor" + motor.getDeviceName());}
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             setPower(0);
         }

@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.scheduling.InputResponseManager;
 public class TestingTeleop extends OpMode {
     GamepadController g1, g2;
     RobotController robot;
-    InputResponseManager g1InputResponse;
+    InputResponseManager g1InputResponse, g2InputResponse;
 
     @Override
     public void init() {
@@ -27,6 +27,26 @@ public class TestingTeleop extends OpMode {
                 .leftStickAction(robot.motorControls.getMoveAction())
                 .rightStickAction(robot.motorControls.getRotateAction())
                 .AAction(robot.motorControls.getSlowModeAction())
+                .DPadAction(
+                        new ActionSequencer.CardinalStickAction.Builder()
+                                .left(robot.hangClawControls.clawAction)
+                                .right(robot.floorClawControls.clawAction)
+                                .get()
+                )
+                .get();
+
+        g2InputResponse = new InputResponseManager.Builder(g2, robot)
+                .DPadAction(
+                        new ActionSequencer.CardinalStickAction.Builder()
+                                .up(robot.armControls.raiseSlide)
+                                .down(robot.armControls.lowerSlide)
+                                .get()
+                )
+                .AAction(robot.armControls.powerDownSlide)
+                .BAction(robot.armControls.powerUpSlide)
+                .loops(
+                        robot.armControls.armLoop
+                )
                 .get();
     }
 

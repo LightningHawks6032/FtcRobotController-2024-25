@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.scheduling;
 
 
+import android.os.Build;
+
 import org.firstinspires.ftc.teamcode.Vec2;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
 import java.util.function.Predicate;
 public class ActionSequencer {
     public static <DataType> void execute(RobotController robot, IAction<DataType> action, DataType data) {
+        if (action == null) {System.err.println("Undefined action called"); return;}
         action.loop(robot, data);
     }
 
@@ -71,6 +74,10 @@ public class ActionSequencer {
         }
         public static class Builder <_DataType> {
             ExecuteIf<_DataType> action;
+            public Builder () {
+                action = new ExecuteIf<>();
+            }
+
             public Builder<_DataType> action(IAction<_DataType> _action) {
                 action.action = _action;
                 return this;
@@ -124,5 +131,39 @@ public class ActionSequencer {
             }
             public LinkAction<T1, T2> get() {return action;}
         }
+    }
+    public static class CardinalStickAction implements IAction<StickAction.Data> {
+        public IAction<ButtonAction.Data> up, down, left, right;
+        @Override
+        public void loop(RobotController robot, StickAction.Data data) {
+            execute(robot, right, new ButtonAction.DataBuilder().pressed(data.stick.x>0).get());
+            execute(robot, left, new ButtonAction.DataBuilder().pressed(data.stick.x<0).get());
+            execute(robot, up, new ButtonAction.DataBuilder().pressed(data.stick.y>0).get());
+            execute(robot, down, new ButtonAction.DataBuilder().pressed(data.stick.y<0).get());
+        }
+        public static class Builder {
+            CardinalStickAction action;
+            public Builder() {
+                action = new CardinalStickAction();
+            }
+            public Builder up(IAction<ButtonAction.Data> buttonAction) {
+                action.up = buttonAction;
+                return this;
+            }
+            public Builder down(IAction<ButtonAction.Data> buttonAction) {
+                action.down = buttonAction;
+                return this;
+            }
+            public Builder left(IAction<ButtonAction.Data> buttonAction) {
+                action.left = buttonAction;
+                return this;
+            }
+            public Builder right(IAction<ButtonAction.Data> buttonAction) {
+                action.right = buttonAction;
+                return this;
+            }
+            public CardinalStickAction get() {return action;}
+        }
+
     }
 }
