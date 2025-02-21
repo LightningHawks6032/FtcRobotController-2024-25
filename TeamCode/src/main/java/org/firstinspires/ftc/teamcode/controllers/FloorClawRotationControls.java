@@ -27,7 +27,7 @@ public class FloorClawRotationControls {
     IMotor c, d;
     Telemetry telemetry;
     float start=1f;
-    float stop=0.15f;
+    float stop=0.12f;
     Toggle toggle;
     public IAction<ActionSequencer.ButtonAction.Data> clawAction;
 
@@ -40,6 +40,8 @@ public class FloorClawRotationControls {
         clawAction = new ActionSequencer.ExecuteIf.Builder<ActionSequencer.ButtonAction.Data>()
                 .action(new ClawAction())
                 .predicate(data -> {
+                    telemetry.addData("d pos", d.getPosition());
+
                     boolean released = toggle.released;
                     toggle.loop(data.pressed);
                     return released != toggle.released;

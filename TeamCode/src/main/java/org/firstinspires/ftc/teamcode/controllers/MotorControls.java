@@ -8,6 +8,9 @@ import org.firstinspires.ftc.teamcode.Vec2;
 import org.firstinspires.ftc.teamcode.Vec2Rot;
 import org.firstinspires.ftc.teamcode.hardware.IMotor;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
+
+import java.util.function.Consumer;
+
 /// Controls movement of the drivetrain
 public final class MotorControls {
 
@@ -17,6 +20,7 @@ public final class MotorControls {
         @Override
         public void loop(RobotController robot, ActionSequencer.StickAction.Data data) {
             robot.telemetry.addData("Motor State", currentState.name());
+            robot.telemetry.addData("Move input", data.stick.x + ", " + data.stick.y);
             if (currentState != STATE.ROTATING) {
                 if (data.stick.nonzero()) {
                     move(data.stick.scale(MAXSPEED).scale(slowFactor));
@@ -26,8 +30,8 @@ public final class MotorControls {
                     currentState = STATE.IDLE;
                     zeroAllMotors();
                 }
+                setPower(currentPower);
             }
-            setPower(currentPower);
         }
     }
 
@@ -37,13 +41,14 @@ public final class MotorControls {
         public void loop(RobotController robot, ActionSequencer.StickAction.Data data) {
             if (currentState != STATE.MOVING) {
                 if (data.stick.x != 0) {
-                    rotate(data.stick.x * MAXSPEED);
+                    rotate(data.stick.x * MAXSPEED * slowFactor);
                     currentState = STATE.ROTATING;
                 }
                 else {
                     currentState = STATE.IDLE;
                     zeroAllMotors();
                 }
+                setPower(currentPower);
             }
         }
     }
@@ -52,12 +57,11 @@ public final class MotorControls {
         @Override
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data) {
             if (data.pressed) {
-                slowFactor = 0.25f;
+                slowFactor = 0.3f;
             }
             else {slowFactor = 1f;}
         }
     }
-
     public MoveAction getMoveAction() {
         return moveAction;
     }
@@ -70,9 +74,11 @@ public final class MotorControls {
         return slowModeAction;
     }
 
+
     MoveAction moveAction;
     RotateAction rotateAction;
     SlowModeAction slowModeAction;
+
 
     /// States the motors can be in
     enum STATE {
@@ -85,7 +91,6 @@ public final class MotorControls {
         public float ul, ur, ll, lr;
         // returns whether all of the powers are zero
         public boolean isZero() {return ul == 0 && ur == 0 && ll == 0 && lr == 0;}
-
         public MotorPower(float _ul, float _ur, float _ll, float _lr) {
             ul = _ul;
             ur = _ur;
@@ -102,6 +107,7 @@ public final class MotorControls {
         public String toString() {
             return "ul: " + ul + ", ur: " + ur + ", ll: " + ll + ", lr: " + lr;
         }
+
     }
 
     IMotor ul, ur, ll, lr; //up left, up right, low left, low right
@@ -111,6 +117,11 @@ public final class MotorControls {
     /// Current state of motion
     STATE currentState;
     Telemetry telemetry;
+    public Consumer<RobotController> stopMotorAction = (i) -> {
+        currentState = STATE.IDLE;
+        zeroAllMotors();
+        setPower(currentPower);
+    };
 
     float slowFactor = 1f;
     final float MAXSPEED = 0.75f;

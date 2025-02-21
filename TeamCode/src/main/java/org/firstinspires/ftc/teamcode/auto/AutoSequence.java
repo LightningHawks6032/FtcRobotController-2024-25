@@ -14,12 +14,15 @@ public class AutoSequence {
     protected Telemetry telemetry;
     protected RobotController robot;
     protected AutoAction[] actions;
-    int idx = 0;
+    protected int idx = 0;
     protected ElapsedTime timer;
 
     public void loop() {
+        telemetry.addData("Autosequence idx", idx);
+        telemetry.addData("Elapsed time", timer.time());
+        telemetry.addData("Action duration", actions[0].getDuration());
         if (idx >= actions.length) {return;}
-        else if (actions[idx].getDuration() >= timer.time()) {
+        else if (actions[idx].getDuration() <= timer.time()) {
             idx++;
             timer.reset();
         }
@@ -38,6 +41,7 @@ public class AutoSequence {
             seq.telemetry = telemetry;
             seq.timer = new ElapsedTime();
             seq.actions = new AutoAction[0];
+            seq.idx = 0;
         }
 
         public final Builder actions(AutoAction... _actions) {

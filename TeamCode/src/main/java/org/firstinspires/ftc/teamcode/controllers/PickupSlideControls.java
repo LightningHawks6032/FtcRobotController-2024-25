@@ -9,7 +9,7 @@ public class PickupSlideControls {
     public class ExtendSlideAction extends ActionSequencer.ButtonAction {
         @Override
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data) {
-            if (data.pressed && !up) {
+            if (data.pressed/* && !up*/) {
                 goUp();
                 claw.ensureClosed();
                 claw.openAfter(1500);
@@ -20,7 +20,7 @@ public class PickupSlideControls {
         @Override
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data) {
             telemetry.addData("pickup slide pos", cr.getPosition() + ", " + cr.getPosition());
-            if (data.pressed && up) {
+            if (data.pressed/* && up*/) {
                 goDown();
                 claw.ensureClosed();
             }
@@ -41,7 +41,7 @@ public class PickupSlideControls {
         cl = _cl;
         telemetry = _telemetry;
         claw = _claw;
-        up = false;
+        up = true;
         extendSlide = new ExtendSlideAction();
         retractSlide = new RetractSlideAction();
     }

@@ -51,7 +51,7 @@ public class RobotController {
         slideRight = new DCMotor(hardwareMap.get(DcMotor.class, "sr" ), null, DcMotorSimple.Direction.REVERSE);
         hangClaw = new ContinuousServo(hardwareMap.servo.get("hangClaw"));
         Servo pcl = hardwareMap.servo.get("pcl");
-        pcl.setDirection(Servo.Direction.REVERSE);
+        pcl.setDirection(Servo.Direction.FORWARD);
         Servo pcr = hardwareMap.servo.get("pcr");
         pcr.setDirection(Servo.Direction.REVERSE);
         pickUpClawLeft = new ContinuousServo(pcl);

@@ -34,8 +34,14 @@ public class TestingTeleop extends OpMode {
         ryanControls = new InputResponseManager.Builder(g2, robot)
                 .AAction(robot.floorClawControls.clawAction)
                 .BAction(robot.floorClawRotationControls.clawAction)
-                .XAction(robot.armControls.lowerSlide)
-                .YAction(robot.armControls.raiseSlide)
+                .XAction(
+                        robot.armControls.lowerSlide,
+                        robot.pickupSlideControls.extendSlide
+                )
+                .YAction(
+
+                        robot.armControls.raiseSlide
+                )
                 .rightStickAction(
                         new ActionSequencer.AxialStickAction.Builder()
                                 .vertical(robot.horizontalSlideControls.slideAction)
@@ -51,8 +57,8 @@ public class TestingTeleop extends OpMode {
                         new ActionSequencer.CardinalStickAction.Builder()
                                 .left(
                                         new ActionSequencer.SwitchButtonAction.Builder()
-                                                .first(robot.pickupSlideControls.extendSlide)
-                                                .second(robot.pickupSlideControls.retractSlide)
+                                                .first(robot.pickupSlideControls.retractSlide)
+                                                .second(robot.pickupSlideControls.extendSlide)
                                                 .get()
                                 )
                                 .right(robot.hangClawControls.clawAction)

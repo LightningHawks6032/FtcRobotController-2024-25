@@ -49,7 +49,7 @@ public class ArmControls {
     Telemetry telemetry;
     Toggle lockToggle;
     //11566
-    int TOP=5000,BOT=0, OFFSET=100;
+    int TOP=11000,BOT=0, OFFSET=100;
     int MAXPOS = 11000,MINPOS=0;
     int target;
     STATE currentState;
@@ -84,8 +84,8 @@ public class ArmControls {
         lockToggle = new Toggle(false);
         target = 0;
 
-        sl.encoder.resetEncoder();
-        sr.encoder.resetEncoder();
+        //sl.encoder.resetEncoder();
+        //sr.encoder.resetEncoder();
 
         currentState = STATE.IDL;
 

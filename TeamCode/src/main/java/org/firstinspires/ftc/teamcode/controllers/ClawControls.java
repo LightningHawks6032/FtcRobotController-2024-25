@@ -49,6 +49,13 @@ public class ClawControls {
     public void ensureClosed() {
         if (toggle.state) {
             close();
+            toggle.state = false;
+        }
+    }
+
+    public void ensureOpen() {
+        if (!toggle.state) {
+            open();
             toggle.state = true;
         }
     }
