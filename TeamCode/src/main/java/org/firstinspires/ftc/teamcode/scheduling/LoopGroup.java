@@ -12,6 +12,7 @@ public class LoopGroup {
     }
 
     public void loop(RobotController robot) {
+        if (loops == null) {System.err.println("Attempted to loop on empty LoopGroup!");return;}
         for (Consumer<RobotController> i : loops) {
             i.accept(robot);
         }

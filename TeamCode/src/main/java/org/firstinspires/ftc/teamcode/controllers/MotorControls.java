@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Vec2;
 import org.firstinspires.ftc.teamcode.Vec2Rot;
 import org.firstinspires.ftc.teamcode.hardware.IMotor;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
-///Exposes motor functionality
+/// Controls movement of the drivetrain
 public final class MotorControls {
 
 
@@ -19,7 +19,7 @@ public final class MotorControls {
             robot.telemetry.addData("Motor State", currentState.name());
             if (currentState != STATE.ROTATING) {
                 if (data.stick.nonzero()) {
-                    move(data.stick.scale(MAXSPEED));
+                    move(data.stick.scale(MAXSPEED).scale(slowFactor));
                     currentState = STATE.MOVING;
                 }
                 else {

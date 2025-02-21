@@ -2,8 +2,34 @@ package org.firstinspires.ftc.teamcode.controllers;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.hardware.IMotor;
+import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 
+/// Controls the bar mounted on the vertical slides
 public class PickupSlideControls {
+    public class ExtendSlideAction extends ActionSequencer.ButtonAction {
+        @Override
+        public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data) {
+            if (data.pressed && !up) {
+                goUp();
+                claw.ensureClosed();
+                claw.openAfter(1500);
+            }
+        }
+    }
+    public class RetractSlideAction extends ActionSequencer.ButtonAction {
+        @Override
+        public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data) {
+            telemetry.addData("pickup slide pos", cr.getPosition() + ", " + cr.getPosition());
+            if (data.pressed && up) {
+                goDown();
+                claw.ensureClosed();
+            }
+        }
+    }
+
+    public ExtendSlideAction extendSlide;
+    public RetractSlideAction retractSlide;
+
     IMotor cr, cl;
     Telemetry telemetry;
     boolean up;
@@ -16,6 +42,8 @@ public class PickupSlideControls {
         telemetry = _telemetry;
         claw = _claw;
         up = false;
+        extendSlide = new ExtendSlideAction();
+        retractSlide = new RetractSlideAction();
     }
     void setPower(float p) {
         cr.setPower(p);
@@ -23,7 +51,6 @@ public class PickupSlideControls {
     }
     void goDown() {
         setPower(0.3f);
-
         up = false;
     }
     void goUp() {
@@ -36,11 +63,12 @@ public class PickupSlideControls {
         if (slidePower < 0 && !up) {
             goUp();
             claw.ensureClosed();
+            //claw.openAfter(2500);
         }
         else if (slidePower > 0 && up) {
             goDown();
             claw.ensureClosed();
-            claw.openAfter(2500);
+
         }
         claw.loop(clawPower);
     }

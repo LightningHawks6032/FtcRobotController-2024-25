@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.scheduling;
 
 import android.os.Build;
 
+import org.firstinspires.ftc.teamcode.Toggle;
 import org.firstinspires.ftc.teamcode.Vec2;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
 import java.util.function.Predicate;
@@ -56,6 +57,26 @@ public class ActionSequencer {
             }
             public DataBuilder pressed(boolean _pressed) {
                 action.pressed = _pressed;
+                return this;
+            }
+            public Data get() {
+                return action;
+            }
+        }
+    }
+    public static class TriggerAction implements IAction<TriggerAction.Data> {
+        public void loop(RobotController robot, Data data) {}
+        public static class Data {
+            public float trigger;
+        }
+        public static class DataBuilder {
+            Data action;
+            public DataBuilder() {
+                action = new Data();
+                action.trigger = 0;
+            }
+            public DataBuilder trigger(float _trigger) {
+                action.trigger = _trigger;
                 return this;
             }
             public Data get() {
@@ -165,5 +186,56 @@ public class ActionSequencer {
             public CardinalStickAction get() {return action;}
         }
 
+    }
+    public static class AxialStickAction implements IAction<StickAction.Data> {
+        public IAction<TriggerAction.Data> horizontal, vertical;
+        @Override
+        public void loop(RobotController robot, StickAction.Data data) {
+            execute(robot, horizontal, new TriggerAction.DataBuilder().trigger(data.stick.x).get());
+            execute(robot, vertical, new TriggerAction.DataBuilder().trigger(data.stick.y).get());
+        }
+        public static class Builder {
+            AxialStickAction action;
+            public Builder() {
+                action = new AxialStickAction();
+            }
+            public AxialStickAction.Builder horizontal(IAction<TriggerAction.Data> triggerAction) {
+                action.horizontal = triggerAction;
+                return this;
+            }
+            public AxialStickAction.Builder vertical(IAction<TriggerAction.Data> triggerAction) {
+                action.vertical = triggerAction;
+                return this;
+            }
+            public AxialStickAction get() {return action;}
+        }
+    }
+    public static class SwitchButtonAction implements IAction<ButtonAction.Data> {
+        public ButtonAction action1, action2;
+        public Toggle toggle;
+        @Override
+        public void loop(RobotController robot, ButtonAction.Data data) {
+            toggle.loop(data.pressed);
+            if (toggle.state) {action1.loop(robot, data);}
+            else {action2.loop(robot, data);}
+        }
+        public static class Builder {
+            SwitchButtonAction action;
+            public Builder() {
+                action = new SwitchButtonAction();
+                action.action1 = new ButtonAction();
+                action.action2 = new ButtonAction();
+                action.toggle = new Toggle(false);
+            }
+            public final Builder first(ButtonAction buttonAction) {
+                action.action1 = buttonAction;
+                return this;
+            }
+            public final Builder second(ButtonAction buttonAction) {
+                action.action2 = buttonAction;
+                return this;
+            }
+            public final SwitchButtonAction get() {return action;}
+        }
     }
 }

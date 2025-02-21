@@ -1,17 +1,13 @@
 package org.firstinspires.ftc.teamcode.controllers;
 
-import com.qualcomm.robotcore.robot.Robot;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.AutoSequence;
 import org.firstinspires.ftc.teamcode.Toggle;
 import org.firstinspires.ftc.teamcode.hardware.DCMotor;
-import org.firstinspires.ftc.teamcode.hardware.IMotor;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 
 import java.util.function.Consumer;
 
-/// Controls vertical slide (for hanging)
+/// Controls vertical slide
 public class ArmControls {
     public class RaiseSlide extends ActionSequencer.ButtonAction {
         @Override
@@ -34,18 +30,16 @@ public class ArmControls {
     public class PowerUpSlide extends ActionSequencer.ButtonAction {
         @Override
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data){
-            if (currentState != STATE.POS && data.pressed) {
-                currentState = STATE.POW;
-                moveWithPower(1f);
+            if (currentState != STATE.POS) {
+                currentPower = Math.signum(currentPower + (data.pressed&&sr.getPosition() < MAXPOS? 1:0));
             }
         }
     }
     public class PowerDownSlide extends ActionSequencer.ButtonAction {
         @Override
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data){
-            if (currentState != STATE.POS && data.pressed) {
-                currentState = STATE.POW;
-                moveWithPower(-1f);
+            if (currentState != STATE.POS) {
+                currentPower = Math.signum(currentPower - (data.pressed&&sr.getPosition() > MINPOS ? 1:0));
             }
         }
     }
@@ -55,19 +49,27 @@ public class ArmControls {
     Telemetry telemetry;
     Toggle lockToggle;
     //11566
-    int TOP=5000,BOT=0, OFFSET=40;
+    int TOP=5000,BOT=0, OFFSET=100;
+    int MAXPOS = 11000,MINPOS=0;
     int target;
     STATE currentState;
-
+    float currentPower = 0f;
     public Consumer<RobotController> armLoop = (RobotController i) -> {
+        telemetry.addData("Slide Power", currentPower);
+        telemetry.addData("Slide state", currentState.name());
+        telemetry.addData("Slide Pos", sr.getPosition() + ", " + sl.getPosition());
         if (currentState == STATE.POS) {
-            if (Math.abs(sr.getPosition() - target) < OFFSET && Math.abs(sl.getPosition() - target) < OFFSET) {
+            if (Math.abs(sr.getPosition() - target) < OFFSET/* && Math.abs(sl.getPosition() - target) < OFFSET*/) {
                 currentState = STATE.IDL;
             }
             else {
                 moveTo(target);
             }
         }
+        else {
+            moveWithPower(-currentPower);
+        }
+        currentPower = 0;
     };
     public LowerSlide lowerSlide;
     public RaiseSlide raiseSlide;
@@ -94,13 +96,14 @@ public class ArmControls {
     }
 
     public void moveTo(int pos) {
-        sl.setPower(Math.abs(sl.getPosition() - pos) < OFFSET ? 0 : Math.signum(sl.getPosition() - pos));
-        sr.setPower(Math.abs(sr.getPosition() - pos) < OFFSET ? 0 : Math.signum(sr.getPosition() - pos));
+        float pow = Math.abs(sr.getPosition() - pos) < OFFSET ? 0 : Math.signum(sr.getPosition() - pos);
+        sl.setPower(-pow/*Math.abs(sl.getPosition() - pos) < OFFSET ? 0 : -0.5f*Math.signum(sl.getPosition() - pos)*/);
+        sr.setPower(pow);
     }
 
     void moveWithPower(float power) {
         sr.setPower(power);
-        sl.setPower(power);
+        sl.setPower(-power);
 
     }
     enum STATE  {
@@ -128,7 +131,7 @@ public class ArmControls {
         }
 
         if (currentState == STATE.POS) {
-            if (Math.abs(sr.getPosition() - target) < OFFSET && Math.abs(sl.getPosition() - target) < OFFSET) {
+            if (Math.abs(sr.getPosition() - target) < OFFSET/* && Math.abs(sl.getPosition() - target) < OFFSET*/) {
                 currentState = STATE.IDL;
             }
             else {

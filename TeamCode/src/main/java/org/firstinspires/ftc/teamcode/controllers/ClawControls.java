@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.hardware.IMotor;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 import org.firstinspires.ftc.teamcode.scheduling.IAction;
 
+/// Controls a claw that toggles with button input. Creates a [ClawAction] on initialization
 public class ClawControls {
 
     public class ClawAction extends ActionSequencer.ButtonAction{

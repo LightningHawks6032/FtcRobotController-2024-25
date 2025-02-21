@@ -16,10 +16,41 @@ public  class InputResponseManager {
         public ActionSequencer.ActionGroup<ActionSequencer.ButtonAction.Data> BAction;
         public ActionSequencer.ActionGroup<ActionSequencer.ButtonAction.Data> XAction;
         public ActionSequencer.ActionGroup<ActionSequencer.ButtonAction.Data> YAction;
+        public ActionSequencer.ActionGroup<ActionSequencer.ButtonAction.Data> leftBumperAction;
+        public ActionSequencer.ActionGroup<ActionSequencer.ButtonAction.Data> rightBumperAction;
+        public ActionSequencer.ActionGroup<ActionSequencer.TriggerAction.Data> leftTriggerAction;
+        public ActionSequencer.ActionGroup<ActionSequencer.TriggerAction.Data> rightTriggerAction;
+        public LoopGroup loops;
 
-        LoopGroup loops;
 
-        void onLeftStick() {
+        void onLeftTrigger() {
+            ActionSequencer.TriggerAction.Data leftTriggerData = new ActionSequencer.TriggerAction.DataBuilder()
+                    .trigger(gamepad.leftTrigger())
+                    .get();
+            ActionSequencer.execute(robot, leftTriggerAction, leftTriggerData);
+        }
+    void onRightTrigger() {
+        ActionSequencer.TriggerAction.Data rightTriggerData = new ActionSequencer.TriggerAction.DataBuilder()
+                .trigger(gamepad.rightTrigger())
+                .get();
+        ActionSequencer.execute(robot, rightTriggerAction, rightTriggerData);
+    }
+
+    void onLeftBumper() {
+        ActionSequencer.ButtonAction.Data data = new ActionSequencer.ButtonAction.DataBuilder()
+                .pressed(gamepad.leftBumper())
+                .get();
+        ActionSequencer.execute(robot, leftBumperAction, data);
+    }
+
+    void onRightBumper() {
+        ActionSequencer.ButtonAction.Data data = new ActionSequencer.ButtonAction.DataBuilder()
+                .pressed(gamepad.rightBumper())
+                .get();
+        ActionSequencer.execute(robot, rightBumperAction, data);
+    }
+
+    void onLeftStick() {
             ActionSequencer.StickAction.Data leftStickData = new ActionSequencer.StickAction.DataBuilder()
                     .stick(gamepad.leftStick())
                     .get();
@@ -73,6 +104,10 @@ public  class InputResponseManager {
             onX();
             onY();
             onDPad();
+            onRightBumper();
+            onLeftBumper();
+            onRightTrigger();
+            onLeftTrigger();
         }
         public static class Builder {
 
@@ -88,6 +123,35 @@ public  class InputResponseManager {
                 inputResponseManager.XAction = new ActionSequencer.ActionGroup<>();
                 inputResponseManager.YAction = new ActionSequencer.ActionGroup<>();
                 inputResponseManager.dPadAction = new ActionSequencer.ActionGroup<>();
+                inputResponseManager.loops = new LoopGroup(null);
+                inputResponseManager.leftBumperAction = new ActionSequencer.ActionGroup<>();
+                inputResponseManager.rightBumperAction = new ActionSequencer.ActionGroup<>();
+                inputResponseManager.leftTriggerAction = new ActionSequencer.ActionGroup<>();
+                inputResponseManager.rightTriggerAction = new ActionSequencer.ActionGroup<>();
+            }
+
+            @SafeVarargs
+            public final Builder rightTriggerAction(IAction<ActionSequencer.TriggerAction.Data>... _rightTriggerAction) {
+                inputResponseManager.rightTriggerAction.actions = _rightTriggerAction;
+                return this;
+            }
+
+            @SafeVarargs
+            public final Builder leftTriggerAction(IAction<ActionSequencer.TriggerAction.Data>... _leftTriggerAction) {
+                inputResponseManager.leftTriggerAction.actions = _leftTriggerAction;
+                return this;
+            }
+
+            @SafeVarargs
+            public final Builder rightBumperAction(IAction<ActionSequencer.ButtonAction.Data>... _rightBumperAction) {
+                inputResponseManager.rightBumperAction.actions = _rightBumperAction;
+                return this;
+            }
+
+            @SafeVarargs
+            public final Builder leftBumperAction(IAction<ActionSequencer.ButtonAction.Data>... _leftBumperAction) {
+                inputResponseManager.leftBumperAction.actions = _leftBumperAction;
+                return this;
             }
 
             @SafeVarargs

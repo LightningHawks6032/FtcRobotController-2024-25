@@ -6,11 +6,19 @@ import org.firstinspires.ftc.teamcode.hardware.IMotor;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 import org.firstinspires.ftc.teamcode.scheduling.IAction;
 
+/// Controls the claw used for picking samples up from the floor. Creates a [ClawAction] object on initialization
 public class FloorClawRotationControls {
     public class ClawAction extends ActionSequencer.ButtonAction{
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data) {
-            if (toggle.state) {open();}
-            else {close();}
+            if (toggle.state) {
+                open();
+                robot.floorClawControls.ensureClosed();
+            }
+            else {
+                close();
+            }
+            robot.floorClawSpinControls.zeroRot.loop(robot, new ActionSequencer.ButtonAction.DataBuilder().pressed(true).get());
+
         }
     }
 
@@ -21,7 +29,7 @@ public class FloorClawRotationControls {
     float start=1f;
     float stop=0.15f;
     Toggle toggle;
-    IAction<ActionSequencer.ButtonAction.Data> clawAction;
+    public IAction<ActionSequencer.ButtonAction.Data> clawAction;
 
     public FloorClawRotationControls(IMotor _c, IMotor _d, Telemetry _telemetry) {
         c = _c;
