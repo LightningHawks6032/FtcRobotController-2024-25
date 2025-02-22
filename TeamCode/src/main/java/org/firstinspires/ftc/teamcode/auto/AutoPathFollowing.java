@@ -18,7 +18,7 @@ public class AutoPathFollowing extends AutoAction{
     public void loop(RobotController robot, float elapsed) {
         action.loop(robot,
                 new ActionSequencer.StickAction.DataBuilder()
-                        .stick(curve.vel.at(elapsed / cutoff).scale(1/6f))
+                        .stick(curve.vel.at(elapsed / cutoff).norm().scale(0.5f))
                         .get()
         );
     }
