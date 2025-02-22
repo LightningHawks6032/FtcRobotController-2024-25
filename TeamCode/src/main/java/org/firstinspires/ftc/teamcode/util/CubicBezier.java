@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.util;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class CubicBezier {
     protected Vec2 p0,p1,p2,p3;
     public Velocity vel;
@@ -40,7 +42,7 @@ public class CubicBezier {
         vel = new Velocity();
         acc = new Acceleration();
     }
-    public static class Builder {
+    public static class Builder  {
         CubicBezier curve;
         public Builder() {
             curve = new CubicBezier();
