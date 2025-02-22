@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Vec2Rot;
+import org.firstinspires.ftc.teamcode.util.Vec2Rot;
 import org.firstinspires.ftc.teamcode.hardware.ContinuousServo;
 import org.firstinspires.ftc.teamcode.hardware.DCMotor;
 import org.firstinspires.ftc.teamcode.hardware.IMotor;
@@ -28,12 +28,12 @@ public class RobotController {
 
     public MotorControls motorControls;
     public ArmControls armControls;
-    public ClawControls hangClawControls;
+    public ClawControls outtakeClawControls;
     public HorizontalSlideControls horizontalSlideControls;
-    public PickupSlideControls pickupSlideControls;
-    public ClawControls floorClawControls;
-    public FloorClawRotationControls floorClawRotationControls;
-    public FloorClawSpinControls floorClawSpinControls;
+    public PickupSlideControls outtakeSlideControls;
+    public ClawControls intakeClawControls;
+    public FloorClawRotationControls intakeClawRotationControls;
+    public FloorClawSpinControls intakeClawSpinControls;
     public Telemetry telemetry;
     public RobotController(HardwareMap hardwareMap, Telemetry _telemetry){
 
@@ -73,13 +73,13 @@ public class RobotController {
 
         motorControls = new MotorControls(moveMotorUpLeft, moveMotorUpRight, moveMotorLowLeft, moveMotorLowRight, telemetry);
         armControls = new ArmControls(slideLeft, slideRight, telemetry);
-        hangClawControls = new ClawControls(hangClaw, /*-0.1f*/0.2f, 0.4f, telemetry);
+        outtakeClawControls = new ClawControls(hangClaw, /*-0.1f*/0.2f, 0.4f, telemetry);
         horizontalSlideControls = new HorizontalSlideControls(horizontalSlide, telemetry);
-        pickupSlideControls = new PickupSlideControls(pickUpClawLeft, pickUpClawRight, hangClawControls, telemetry);
+        outtakeSlideControls = new PickupSlideControls(pickUpClawLeft, pickUpClawRight, outtakeClawControls, telemetry);
 
-        floorClawControls = new ClawControls(floorClaw, 0.5f, 1f, telemetry);
-        floorClawRotationControls = new FloorClawRotationControls(floorClawRotationLeft, floorClawRotationRight, telemetry);
-        floorClawSpinControls = new FloorClawSpinControls(floorClawSpin, telemetry);
+        intakeClawControls = new ClawControls(floorClaw, 0.5f, 1f, telemetry);
+        intakeClawRotationControls = new FloorClawRotationControls(floorClawRotationLeft, floorClawRotationRight, telemetry);
+        intakeClawSpinControls = new FloorClawSpinControls(floorClawSpin, telemetry);
     }
 
     public void init() {

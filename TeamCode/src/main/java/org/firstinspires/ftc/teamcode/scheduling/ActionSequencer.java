@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.scheduling;
 
 
-import android.os.Build;
-
-import org.firstinspires.ftc.teamcode.Toggle;
-import org.firstinspires.ftc.teamcode.Vec2;
+import org.firstinspires.ftc.teamcode.util.Toggle;
+import org.firstinspires.ftc.teamcode.util.Vec2;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
 import java.util.function.Predicate;
 public class ActionSequencer {

@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import org.firstinspires.ftc.teamcode.Vec2;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
-import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 
-public class StopMoving extends AutoAction {
+public class AutoStopMoving extends AutoAction {
 
     @Override
     float getDuration() {

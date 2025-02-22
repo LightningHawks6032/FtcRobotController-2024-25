@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.controllers;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Toggle;
+import org.firstinspires.ftc.teamcode.util.Toggle;
 import org.firstinspires.ftc.teamcode.hardware.IMotor;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 import org.firstinspires.ftc.teamcode.scheduling.IAction;

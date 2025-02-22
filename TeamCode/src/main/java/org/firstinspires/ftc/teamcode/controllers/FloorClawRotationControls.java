@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.controllers;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Toggle;
+import org.firstinspires.ftc.teamcode.util.Toggle;
 import org.firstinspires.ftc.teamcode.hardware.IMotor;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 import org.firstinspires.ftc.teamcode.scheduling.IAction;
@@ -12,12 +12,12 @@ public class FloorClawRotationControls {
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data) {
             if (toggle.state) {
                 open();
-                robot.floorClawControls.ensureClosed();
+                robot.intakeClawControls.ensureClosed();
             }
             else {
                 close();
             }
-            robot.floorClawSpinControls.zeroRot.loop(robot, new ActionSequencer.ButtonAction.DataBuilder().pressed(true).get());
+            robot.intakeClawSpinControls.zeroRot.loop(robot, new ActionSequencer.ButtonAction.DataBuilder().pressed(true).get());
 
         }
     }

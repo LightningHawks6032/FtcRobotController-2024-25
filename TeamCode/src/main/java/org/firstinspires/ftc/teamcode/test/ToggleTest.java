@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.test;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Toggle;
+import org.firstinspires.ftc.teamcode.util.Toggle;
 
 @TeleOp(name="ToggleTest", group="Test")
 public class ToggleTest extends OpMode{

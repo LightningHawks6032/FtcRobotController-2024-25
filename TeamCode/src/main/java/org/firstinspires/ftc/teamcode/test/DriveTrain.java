@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.Vec2Rot;
+import org.firstinspires.ftc.teamcode.util.Vec2Rot;
 import org.firstinspires.ftc.teamcode.controllers.MotorControls;
 import org.firstinspires.ftc.teamcode.hardware.DCMotor;
 import org.firstinspires.ftc.teamcode.hardware.IMotor;

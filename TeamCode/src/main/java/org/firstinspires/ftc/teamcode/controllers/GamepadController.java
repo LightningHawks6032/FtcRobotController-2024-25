@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.controllers;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.Vec2;
+import org.firstinspires.ftc.teamcode.util.Vec2;
 import org.firstinspires.ftc.teamcode.hardware.IController;
 
 public final class GamepadController  implements IController {

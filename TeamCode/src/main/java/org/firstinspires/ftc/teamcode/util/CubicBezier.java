@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.util;
 
 public class CubicBezier {
     protected Vec2 p0,p1,p2,p3;

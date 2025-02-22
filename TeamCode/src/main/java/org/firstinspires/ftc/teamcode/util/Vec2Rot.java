@@ -1,6 +1,6 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.util;
 
-public class Vec2Rot extends Vec2{
+public class Vec2Rot extends Vec2 {
     public float r;
     public Vec2Rot(float _x, float _y, float _r) {
         super(_x, _y);

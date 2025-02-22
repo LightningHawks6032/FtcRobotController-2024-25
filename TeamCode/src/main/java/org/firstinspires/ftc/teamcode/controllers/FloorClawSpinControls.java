@@ -35,7 +35,7 @@ public class FloorClawSpinControls {
     public ZeroRotationAction zeroRot;
 
 
-    public Consumer<RobotController> floorClawSpinLoop = (RobotController i) -> {
+    public Consumer<RobotController> intakeClawSpinLoop = (RobotController i) -> {
         motor.setPower(currentPower);
     };
 

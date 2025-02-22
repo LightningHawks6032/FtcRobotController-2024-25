@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode.scheduling;
 
-import org.firstinspires.ftc.teamcode.Vec2Rot;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.firstinspires.ftc.teamcode.util.Vec2Rot;
 
 public class ActionInput {
     public Vec2Rot moveDirection;

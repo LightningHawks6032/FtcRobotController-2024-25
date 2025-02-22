@@ -3,9 +3,8 @@ package org.firstinspires.ftc.teamcode.controllers;
 import androidx.annotation.NonNull;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Toggle;
-import org.firstinspires.ftc.teamcode.Vec2;
-import org.firstinspires.ftc.teamcode.Vec2Rot;
+import org.firstinspires.ftc.teamcode.util.Vec2;
+import org.firstinspires.ftc.teamcode.util.Vec2Rot;
 import org.firstinspires.ftc.teamcode.hardware.IMotor;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 

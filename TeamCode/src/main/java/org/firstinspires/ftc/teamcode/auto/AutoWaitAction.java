@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.auto;
 
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
 
-public class WaitAction extends AutoAction{
+public class AutoWaitAction extends AutoAction{
     protected float duration = 1f;
     @Override
     float getDuration() {
@@ -15,12 +15,12 @@ public class WaitAction extends AutoAction{
     }
 
     public static class Builder {
-        WaitAction action;
+        AutoWaitAction action;
         public Builder duration(float _duration) {
             action.duration = _duration;
             return this;
         }
-        public WaitAction get() {
+        public AutoWaitAction get() {
             return action;
         }
     }

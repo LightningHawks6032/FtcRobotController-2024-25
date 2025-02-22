@@ -1,21 +1,18 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.robot.Robot;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.auto.AutoActionGroup;
 import org.firstinspires.ftc.teamcode.auto.AutoSequence;
 import org.firstinspires.ftc.teamcode.auto.ConstantAutoAction;
-import org.firstinspires.ftc.teamcode.auto.PathFollowing;
-import org.firstinspires.ftc.teamcode.auto.RotateAction;
-import org.firstinspires.ftc.teamcode.auto.StopMoving;
+import org.firstinspires.ftc.teamcode.auto.AutoPathFollowing;
+import org.firstinspires.ftc.teamcode.auto.AutoRotateAction;
+import org.firstinspires.ftc.teamcode.auto.AutoStopMoving;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
-import org.firstinspires.ftc.teamcode.scheduling.ActionInput;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
-
-import java.util.ArrayList;
+import org.firstinspires.ftc.teamcode.util.CubicBezier;
+import org.firstinspires.ftc.teamcode.util.Vec2;
 
 @Autonomous(name = "Left", group="Comp")
 public class TestingAuto extends OpMode {
@@ -26,11 +23,11 @@ public class TestingAuto extends OpMode {
     public void init() {
         robot = new RobotController(hardwareMap, telemetry);
         robot.init();
-        robot.hangClawControls.ensureClosed();
+        robot.outtakeClawControls.ensureClosed();
         seq = new AutoSequence.Builder(robot, telemetry)
                 .actions(
                         new AutoActionGroup(
-                                new PathFollowing.Builder(robot)
+                                new AutoPathFollowing.Builder(robot)
                                         .curve(
                                                 new CubicBezier.Builder()
                                                         .p0(new Vec2(5.2f, 5.32f))
@@ -51,23 +48,23 @@ public class TestingAuto extends OpMode {
                                         .duration(5f)
                                         .get(),
                                 new ConstantAutoAction.Builder<ActionSequencer.ButtonAction.Data>()
-                                        .action(robot.pickupSlideControls.retractSlide)
+                                        .action(robot.outtakeSlideControls.retractSlide)
                                         .dataFunc(i -> new ActionSequencer.ButtonAction.DataBuilder().pressed(true).get())
                                         .duration(0.1f)
                                         .get()
                         ),
-                        new StopMoving(),
-                        new RotateAction.Builder(robot)
+                        new AutoStopMoving(),
+                        new AutoRotateAction.Builder(robot)
                                 .direction(-1)
                                 .duration(0.8f)
                                 .get(),
-                        new StopMoving(),
+                        new AutoStopMoving(),
                         new ConstantAutoAction.Builder<ActionSequencer.StickAction.Data>()
                                 .action(robot.motorControls.getMoveAction())
                                 .dataFunc(i -> new ActionSequencer.StickAction.DataBuilder().stick(new Vec2(0, -1)).get())
                                 .duration(0.2f)
                                 .get(),
-                        new StopMoving()
+                        new AutoStopMoving()
                         )
                 .get();
     }

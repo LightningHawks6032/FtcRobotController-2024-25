@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import org.firstinspires.ftc.teamcode.CubicBezier;
+import org.firstinspires.ftc.teamcode.util.CubicBezier;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 
-public class PathFollowing extends AutoAction{
+public class AutoPathFollowing extends AutoAction{
     protected float duration = 2f;
     protected float cutoff = duration;
     protected CubicBezier curve;
@@ -24,10 +24,10 @@ public class PathFollowing extends AutoAction{
     }
 
     public static class Builder {
-        PathFollowing action;
+        AutoPathFollowing action;
 
         public Builder(RobotController robot) {
-            action = new PathFollowing();
+            action = new AutoPathFollowing();
             action.curve = new CubicBezier();
             action.action = robot.motorControls.getMoveAction();
             action.cutoff = 2f;
@@ -46,7 +46,7 @@ public class PathFollowing extends AutoAction{
             action.cutoff = _c;
             return this;
         }
-        public PathFollowing get() {
+        public AutoPathFollowing get() {
             return action;
         }
     }
