@@ -84,8 +84,8 @@ public class ArmControls {
         lockToggle = new Toggle(false);
         target = 0;
 
-        //sl.encoder.resetEncoder();
-        //sr.encoder.resetEncoder();
+        sl.encoder.resetEncoder();
+        sr.encoder.resetEncoder();
 
         currentState = STATE.IDL;
 

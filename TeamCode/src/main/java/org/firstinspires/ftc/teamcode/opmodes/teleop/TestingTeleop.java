@@ -24,6 +24,10 @@ public class TestingTeleop extends OpMode {
         robot = new RobotController(hardwareMap, telemetry);
         robot.init();
 
+        robot.intakeClawControls.ensureClosed();
+        //robot.outtakeClawControls.toggle.state = false;
+        //robot.outtakeClawControls.close();
+
         jaydenControls = new InputResponseManager.Builder(g1, robot)
                 .leftStickAction(robot.motorControls.getMoveAction())
                 .rightStickAction(robot.motorControls.getRotateAction())
@@ -34,13 +38,13 @@ public class TestingTeleop extends OpMode {
                 .AAction(robot.intakeClawControls.clawAction)
                 .BAction(robot.intakeClawRotationControls.clawAction)
                 .XAction(
-                        robot.armControls.lowerSlide,
-                        robot.outtakeSlideControls.extendSlide
+                        robot.armControls.lowerSlide
+                        //robot.outtakeSlideControls.extendSlide
                 )
                 .YAction(
-                        robot.outtakeClawControls.clawAction,
-                        robot.intakeClawControls.clawAction,
-                        robot.outtakeSlideControls.retractSlide,
+                        //robot.outtakeClawControls.clawAction,
+                        //robot.intakeClawControls.clawAction,
+                        //robot.outtakeSlideControls.retractSlide,
                         robot.armControls.raiseSlide
                 )
                 .rightStickAction(
