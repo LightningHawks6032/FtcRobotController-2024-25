@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.controllers;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.auto.AutoAction;
 import org.firstinspires.ftc.teamcode.util.Toggle;
 import org.firstinspires.ftc.teamcode.hardware.DCMotor;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
@@ -44,13 +45,23 @@ public class ArmControls {
         }
     }
 
+    public class MoveSlideToPosition extends ActionSequencer.TriggerAction {
+        @Override
+        public void loop(RobotController robot, ActionSequencer.TriggerAction.Data data) {
+            if (currentState != STATE.POW) {
+                currentState = STATE.POS;
+                target = (int)data.trigger;
+            }
+        }
+    }
+
 
     DCMotor sr, sl;
     Telemetry telemetry;
     Toggle lockToggle;
     //11566
-    int TOP=11000,BOT=0, OFFSET=100;
-    int MAXPOS = 11000,MINPOS=0;
+    int TOP=3500,BOT=0, OFFSET=100;
+    int MAXPOS = 4000,MINPOS=0;
     int target;
     STATE currentState;
     float currentPower = 0f;
@@ -75,6 +86,7 @@ public class ArmControls {
     public RaiseSlide raiseSlide;
     public PowerDownSlide powerDownSlide;
     public PowerUpSlide powerUpSlide;
+    public MoveSlideToPosition moveSlideToPosition;
 
 
     public ArmControls(DCMotor _sr, DCMotor _sl, Telemetry _telemetry) {
@@ -93,12 +105,12 @@ public class ArmControls {
         raiseSlide = new RaiseSlide();
         powerDownSlide = new PowerDownSlide();
         powerUpSlide = new PowerUpSlide();
+        moveSlideToPosition = new MoveSlideToPosition();
     }
 
     public void moveTo(int pos) {
         float pow = Math.abs(sr.getPosition() - pos) < OFFSET ? 0 : Math.signum(sr.getPosition() - pos);
-        sl.setPower(-pow/*Math.abs(sl.getPosition() - pos) < OFFSET ? 0 : -0.5f*Math.signum(sl.getPosition() - pos)*/);
-        sr.setPower(pow);
+        moveWithPower(pow);
     }
 
     void moveWithPower(float power) {

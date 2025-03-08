@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.auto;
 
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
 
-public abstract class AutoAction{
-    abstract float getDuration();
+public class AutoAction{
+    public float getDuration() {return 0f;}
 
-    abstract void loop(RobotController robot, float elapsed);
+    public void loop(RobotController robot, float elapsed) {}
 }

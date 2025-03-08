@@ -11,12 +11,12 @@ public class ConstantAutoAction <DataType> extends AutoAction{
     protected float duration=1f;
     Function<RobotController, DataType> data;
     @Override
-    float getDuration() {
+    public float getDuration() {
         return duration;
     }
 
     @Override
-    void loop(RobotController robot, float elapsed) {
+    public void loop(RobotController robot, float elapsed) {
         action.loop(robot, data.apply(robot));
     }
     public static class Builder<DataType> {

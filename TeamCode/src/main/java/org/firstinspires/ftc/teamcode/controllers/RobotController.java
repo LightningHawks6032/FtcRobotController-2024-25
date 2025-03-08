@@ -47,8 +47,12 @@ public class RobotController {
 
 
         System.out.println( hardwareMap.servo.toString());
-        slideLeft = new DCMotor(hardwareMap.get(DcMotor.class, "sl" ), null, DcMotorSimple.Direction.FORWARD);
-        slideRight = new DCMotor(hardwareMap.get(DcMotor.class, "sr" ), null, DcMotorSimple.Direction.REVERSE);
+        DcMotor slideLeftTemp = hardwareMap.get(DcMotor.class, "sl" );
+        DcMotor slideRightTemp = hardwareMap.get(DcMotor.class, "sr" );
+        slideLeftTemp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideRightTemp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideLeft = new DCMotor(slideLeftTemp, null, DcMotorSimple.Direction.FORWARD);
+        slideRight = new DCMotor(slideRightTemp, null, DcMotorSimple.Direction.REVERSE);
         hangClaw = new ContinuousServo(hardwareMap.servo.get("hangClaw"));
         Servo pcl = hardwareMap.servo.get("pcl");
         pcl.setDirection(Servo.Direction.FORWARD);
@@ -73,7 +77,7 @@ public class RobotController {
 
         motorControls = new MotorControls(moveMotorUpLeft, moveMotorUpRight, moveMotorLowLeft, moveMotorLowRight, telemetry);
         armControls = new ArmControls(slideLeft, slideRight, telemetry);
-        outtakeClawControls = new ClawControls(hangClaw, /*-0.1f*/0.2f, 0.4f, telemetry);
+        outtakeClawControls = new ClawControls(hangClaw, /*-0.1f*/0.7f, 0.37f, telemetry);
         horizontalSlideControls = new HorizontalSlideControls(horizontalSlide, telemetry);
         outtakeSlideControls = new PickupSlideControls(pickUpClawLeft, pickUpClawRight, outtakeClawControls, telemetry);
 

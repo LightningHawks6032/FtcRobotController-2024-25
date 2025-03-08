@@ -12,12 +12,12 @@ public class AutoRotateAction extends AutoAction{
 
     MotorControls.RotateAction action;
     @Override
-    float getDuration() {
+    public float getDuration() {
         return duration;
     }
 
     @Override
-    void loop(RobotController robot, float elapsed) {
+    public void loop(RobotController robot, float elapsed) {
         action.loop(robot, new ActionSequencer.StickAction.DataBuilder().stick(new Vec2(direction, 0)).get());
     }
     public static class Builder {
