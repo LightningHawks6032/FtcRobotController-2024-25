@@ -11,13 +11,13 @@ public class FloorClawSpinControls {
     public class RotateCounterClockwiseAction extends ActionSequencer.ButtonAction {
         @Override
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data){
-                if (data.pressed) currentPower = Math.min(currentPower + 0.01f, 1f);
+                if (data.pressed) currentPower = Math.min(currentPower - 0.01f, -1f);
                 }
     }
     public class RotateClockwiseAction extends ActionSequencer.ButtonAction {
         @Override
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data){
-            if (data.pressed) currentPower = Math.max(currentPower - 0.01f, -1);
+            if (data.pressed) currentPower = Math.max(currentPower + 0.01f, +1);
         }
     }
     public class ZeroRotationAction extends ActionSequencer.ButtonAction {
