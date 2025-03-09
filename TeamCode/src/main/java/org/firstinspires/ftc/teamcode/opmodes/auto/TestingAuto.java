@@ -25,12 +25,18 @@ public class TestingAuto extends OpMode {
     public void init() {
         robot = new RobotController(hardwareMap, telemetry);
         robot.init();
-        robot.outtakeClawControls.ensureClosed();
+        robot.outtakeSlideControls.extendSlide.loop(robot, new ActionSequencer.ButtonAction.DataBuilder().pressed(true).get());
+        robot.outtakeClawControls.open();
         //robot.outtakeSlideControls.up = false;
-        robot.outtakeSlideControls.retractSlide.loop(robot, new ActionSequencer.ButtonAction.DataBuilder().pressed(true).get());
         seq = new AutoSequence.Builder(robot, telemetry)
                 .actions(
+                                new ConstantAutoAction.Builder<ActionSequencer.ButtonAction.Data>()
+                                    .action(robot.outtakeSlideControls.retractSlide)
+                                    .dataFunc(i -> new ActionSequencer.ButtonAction.DataBuilder().pressed(true).get())
+                                    .duration(0.1f)
+                                    .get(),
                                 new AutoPathFollowing.Builder(robot)
+
                                         .curve(
                                                 new CubicBezier.Builder()
                                                         .p0(new Vec2(2.74f, 1.73f))
@@ -39,33 +45,28 @@ public class TestingAuto extends OpMode {
                                                         .p3(new Vec2(2.47f, 0.51f))
                                                         .get()
                                         )
-                                        .cutoff(2f)
-                                        .duration(2f)
+                                        .cutoff(2.5f)
+                                        .duration(2.5f)
+                                        .speed(0.8f)
                                         .get(),
-                                new AutoStopMoving(),
-                                new AutoActionGroup(
-                                    new ConstantAutoAction.Builder<ActionSequencer.TriggerAction.Data>()
-                                            .action(robot.armControls.moveSlideToPosition)
-                                            .dataFunc(i -> {
-                                                i.armControls.armLoop.accept(i);
-                                                return new ActionSequencer.TriggerAction.DataBuilder().trigger(3000).get();
-                                            })
-                                            .duration(1.4f)
-                                            .get(),
-                                    new ConstantAutoAction.Builder<ActionSequencer.ButtonAction.Data>()
-                                            .action(robot.outtakeSlideControls.retractSlide)
-                                            .dataFunc(i -> new ActionSequencer.ButtonAction.DataBuilder().pressed(true).get())
-                                            .duration(0.1f)
-                                            .get()
-                                ),
+                        new ConstantAutoAction.Builder<ActionSequencer.ButtonAction.Data>()
+                                .action(robot.armControls.powerUpSlide)
+                                .dataFunc(i -> {
+                                    i.armControls.armLoop.accept(i);
+                                    return new ActionSequencer.ButtonAction.DataBuilder().pressed(true).get();
+                                })
+                                .duration(0.3f)
+                                .get(),
                                 new ConstantAutoAction.Builder<ActionSequencer.ButtonAction.Data>()
-                                        .action(robot.armControls.lowerSlide)
+                                        .action(robot.armControls.raiseSlide)
                                         .dataFunc(i -> {
                                             i.armControls.armLoop.accept(i);
                                             return new ActionSequencer.ButtonAction.DataBuilder().pressed(true).get();
                                         })
                                         .duration(3f)
-                                        .get()
+                                        .get(),
+                        new AutoStopMoving()
+
                 )
 
                 .get();

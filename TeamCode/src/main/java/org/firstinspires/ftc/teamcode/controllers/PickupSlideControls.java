@@ -52,11 +52,11 @@ public class PickupSlideControls {
         cl.setPower(p);
     }
     void goDown() {
-        setPower(0f);
+        setPower(0.17f);
         up = false;
     }
     void goUp() {
-        setPower(0.74f);
+        setPower(0.85f);
         up = true;
 
     }
