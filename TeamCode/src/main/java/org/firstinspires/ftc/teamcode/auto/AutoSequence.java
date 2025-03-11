@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 
 /// Sequence of actions robot takes during auto
-public class AutoSequence {
+public class AutoSequence{
     protected Telemetry telemetry;
     protected RobotController robot;
     protected AutoAction[] actions;
@@ -32,6 +32,7 @@ public class AutoSequence {
     }
     public void start() {
         timer.reset();
+        idx = 0;
     }
     public static class Builder {
         AutoSequence seq;

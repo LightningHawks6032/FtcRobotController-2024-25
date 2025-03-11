@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.hardware.IMotor;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 
 /// Controls the bar mounted on the vertical slides
+//Bring backward
 public class PickupSlideControls {
     public class ExtendSlideAction extends ActionSequencer.ButtonAction {
         @Override
@@ -12,17 +13,18 @@ public class PickupSlideControls {
             if (data.pressed/* && !up*/) {
                 goUp();
                 claw.ensureClosed();
-                claw.openAfter(1500);
+                //claw.openAfter(1500);
             }
         }
     }
+    //Bring forward
     public class RetractSlideAction extends ActionSequencer.ButtonAction {
         @Override
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data) {
             telemetry.addData("pickup slide pos", cr.getPosition() + ", " + cr.getPosition());
             if (data.pressed/* && up*/) {
                 goDown();
-                claw.ensureClosed();
+                claw.ensureOpen();
             }
         }
     }
@@ -32,9 +34,9 @@ public class PickupSlideControls {
 
     IMotor cr, cl;
     Telemetry telemetry;
-    boolean up;
-
+    public boolean up;
     ClawControls claw;
+
 
     public PickupSlideControls(IMotor _cl, IMotor _cr, ClawControls _claw, Telemetry _telemetry) {
         cr = _cr;
@@ -50,11 +52,11 @@ public class PickupSlideControls {
         cl.setPower(p);
     }
     void goDown() {
-        setPower(0.3f);
+        setPower(0.17f);
         up = false;
     }
     void goUp() {
-        setPower(1f);
+        setPower(0.85f);
         up = true;
 
     }

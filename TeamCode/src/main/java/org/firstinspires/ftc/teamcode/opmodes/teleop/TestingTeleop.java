@@ -3,9 +3,12 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.auto.AutoSequence;
+import org.firstinspires.ftc.teamcode.auto.ConstantAutoAction;
 import org.firstinspires.ftc.teamcode.controllers.GamepadController;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
+import org.firstinspires.ftc.teamcode.scheduling.AutoSequenceAction;
 import org.firstinspires.ftc.teamcode.scheduling.InputResponseManager;
 import org.firstinspires.ftc.teamcode.util.Vec2Rot;
 
@@ -24,6 +27,11 @@ public class TestingTeleop extends OpMode {
         robot = new RobotController(hardwareMap, telemetry);
         robot.init();
 
+        robot.intakeClawControls.ensureClosed();
+        //robot.outtakeClawControls.open();
+        //robot.outtakeClawControls.toggle.state = false;
+        //robot.outtakeClawControls.close();
+
         jaydenControls = new InputResponseManager.Builder(g1, robot)
                 .leftStickAction(robot.motorControls.getMoveAction())
                 .rightStickAction(robot.motorControls.getRotateAction())
@@ -34,14 +42,40 @@ public class TestingTeleop extends OpMode {
                 .AAction(robot.intakeClawControls.clawAction)
                 .BAction(robot.intakeClawRotationControls.clawAction)
                 .XAction(
-                        robot.armControls.lowerSlide,
-                        robot.outtakeSlideControls.extendSlide
+                        robot.armControls.lowerSlide
+                        //robot.outtakeSlideControls.extendSlide
                 )
                 .YAction(
-                        robot.outtakeClawControls.clawAction,
-                        robot.intakeClawControls.clawAction,
-                        robot.outtakeSlideControls.retractSlide,
-                        robot.armControls.raiseSlide
+                        //robot.outtakeClawControls.clawAction,
+                        //robot.intakeClawControls.clawAction,
+                        //robot.outtakeSlideControls.retractSlide,
+                                        new AutoSequenceAction(new AutoSequence.Builder(robot, telemetry)
+                                                .actions(
+                                                        new ConstantAutoAction.Builder<ActionSequencer.ButtonAction.Data>()
+                                                                .action(robot.intakeClawControls.clawAction)
+                                                                .dataFunc(i -> {
+                                                                    i.intakeClawControls.ensureClosed();
+                                                                    return new ActionSequencer.ButtonAction.DataBuilder().pressed(false).get();
+                                                                })
+                                                                .duration(1.5f)
+                                                                .get(),
+                                                        new ConstantAutoAction.Builder<ActionSequencer.ButtonAction.Data>()
+                                                                .action(robot.outtakeSlideControls.retractSlide)
+                                                                .dataFunc(i -> new ActionSequencer.ButtonAction.DataBuilder().pressed(true).get())
+                                                                .duration(0.1f)
+                                                                .get(),
+                                                        new ConstantAutoAction.Builder<ActionSequencer.ButtonAction.Data>()
+                                                                .action(robot.armControls.raiseSlide)
+                                                                .dataFunc(i -> {
+                                                                    i.armControls.armLoop.accept(i);
+                                                                    return new ActionSequencer.ButtonAction.DataBuilder().pressed(true).get();
+                                                                })
+                                                                .duration(3f)
+                                                                .get()
+                                                        //open intake claw, extend outtake, raise slides
+                                                )
+                                                .get()
+                                        )
                 )
                 .rightStickAction(
                         new ActionSequencer.AxialStickAction.Builder()

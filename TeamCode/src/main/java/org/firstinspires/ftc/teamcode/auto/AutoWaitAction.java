@@ -5,12 +5,12 @@ import org.firstinspires.ftc.teamcode.controllers.RobotController;
 public class AutoWaitAction extends AutoAction{
     protected float duration = 1f;
     @Override
-    float getDuration() {
+    public float getDuration() {
         return duration;
     }
 
     @Override
-    void loop(RobotController robot, float elapsed) {
+    public void loop(RobotController robot, float elapsed) {
 
     }
 

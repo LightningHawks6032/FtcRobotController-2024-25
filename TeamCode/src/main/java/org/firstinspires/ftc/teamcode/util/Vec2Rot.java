@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.util;
 
 public class Vec2Rot extends Vec2 {
     public float r;
+    public String toString() {
+        return x + ", " + y +", " +r;
+    }
     public Vec2Rot(float _x, float _y, float _r) {
         super(_x, _y);
         r =_r;

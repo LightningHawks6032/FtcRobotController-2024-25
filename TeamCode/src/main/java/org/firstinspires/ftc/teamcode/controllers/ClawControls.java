@@ -19,7 +19,7 @@ public class ClawControls {
     IMotor c;
     float start, stop;
     Telemetry telemetry;
-    Toggle toggle;
+    public Toggle toggle;
     public IAction<ActionSequencer.ButtonAction.Data> clawAction;
 
     public ClawControls(IMotor _c, float _start, float _stop, Telemetry _telemetry) {
@@ -27,7 +27,7 @@ public class ClawControls {
         start = _start;
         stop = _stop;
         telemetry = _telemetry;
-        toggle = new Toggle(false);
+        toggle = new Toggle(true);
 
         clawAction = new ActionSequencer.ExecuteIf.Builder<ActionSequencer.ButtonAction.Data>()
                 .action(new ClawAction())
@@ -39,10 +39,10 @@ public class ClawControls {
                 .get();
     }
 
-    void close() {
+    public void close() {
         c.setPower(stop);
     }
-    void open() {
+    public void open() {
         c.setPower(start);
     }
 

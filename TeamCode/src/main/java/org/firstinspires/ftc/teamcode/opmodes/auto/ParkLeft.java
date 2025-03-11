@@ -18,7 +18,7 @@ public class ParkLeft extends OpMode {
     public void init() {
         robot = new RobotController(hardwareMap, telemetry);
         robot.init();
-        robot.outtakeClawControls.ensureClosed();
+        robot.outtakeClawControls.open();
         seq = new AutoSequence.Builder(robot, telemetry)
                 .actions(
                         new ConstantAutoAction.Builder<ActionSequencer.StickAction.Data>()
