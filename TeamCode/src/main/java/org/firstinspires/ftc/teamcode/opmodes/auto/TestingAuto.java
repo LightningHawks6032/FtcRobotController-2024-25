@@ -36,7 +36,6 @@ public class TestingAuto extends OpMode {
                                     .duration(0.1f)
                                     .get(),
                                 new AutoPathFollowing.Builder(robot)
-
                                         .curve(
                                                 new CubicBezier.Builder()
                                                         .p0(new Vec2(2.74f, 1.73f))
