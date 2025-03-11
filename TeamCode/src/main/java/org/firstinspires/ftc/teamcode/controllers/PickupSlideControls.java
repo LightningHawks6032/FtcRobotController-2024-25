@@ -10,10 +10,9 @@ public class PickupSlideControls {
     public class ExtendSlideAction extends ActionSequencer.ButtonAction {
         @Override
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data) {
-            if (data.pressed/* && !up*/) {
+            if (data.pressed) {
                 goUp();
                 claw.ensureClosed();
-                //claw.openAfter(1500);
             }
         }
     }
@@ -22,7 +21,7 @@ public class PickupSlideControls {
         @Override
         public void loop(RobotController robot, ActionSequencer.ButtonAction.Data data) {
             telemetry.addData("pickup slide pos", cr.getPosition() + ", " + cr.getPosition());
-            if (data.pressed/* && up*/) {
+            if (data.pressed) {
                 goDown();
                 claw.ensureOpen();
             }
@@ -60,19 +59,4 @@ public class PickupSlideControls {
         up = true;
 
     }
-
-    public void loop (int slidePower, boolean clawPower) {
-        if (slidePower < 0 && !up) {
-            goUp();
-            claw.ensureClosed();
-            //claw.openAfter(2500);
-        }
-        else if (slidePower > 0 && up) {
-            goDown();
-            claw.ensureClosed();
-
-        }
-        claw.loop(clawPower);
-    }
-
 }

@@ -72,14 +72,4 @@ public class ClawControls {
                 delay_ms
         );
     }
-
-    public void loop(boolean power) {
-        boolean released = toggle.released;
-        toggle.loop(power);
-        if (released != toggle.released) {
-            if (toggle.state) {open();}
-            else {close();}
-        }
-
-    }
 }

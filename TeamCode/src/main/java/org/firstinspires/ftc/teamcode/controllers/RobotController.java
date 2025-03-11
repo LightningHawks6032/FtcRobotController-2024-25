@@ -6,11 +6,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.util.Vec2Rot;
 import org.firstinspires.ftc.teamcode.hardware.ContinuousServo;
 import org.firstinspires.ftc.teamcode.hardware.DCMotor;
 import org.firstinspires.ftc.teamcode.hardware.IMotor;
-import org.firstinspires.ftc.teamcode.scheduling.ActionInput;
 
 public class RobotController {
     IMotor moveMotorUpLeft;
@@ -77,7 +75,7 @@ public class RobotController {
 
         motorControls = new MotorControls(moveMotorUpLeft, moveMotorUpRight, moveMotorLowLeft, moveMotorLowRight, telemetry);
         armControls = new ArmControls(slideLeft, slideRight, telemetry);
-        outtakeClawControls = new ClawControls(hangClaw, /*-0.1f*/0.7f, 0.42f, telemetry);
+        outtakeClawControls = new ClawControls(hangClaw, 0.7f, 0.42f, telemetry);
         horizontalSlideControls = new HorizontalSlideControls(horizontalSlide, telemetry);
         outtakeSlideControls = new PickupSlideControls(pickUpClawLeft, pickUpClawRight, outtakeClawControls, telemetry);
 
@@ -88,18 +86,5 @@ public class RobotController {
 
     public void init() {
         motorControls.init();
-    }
-
-    public void loop(Vec2Rot moveDirection, float slowMode, float verticalArmControlPower, int horizontalSlideControlPower, int pickUpSlideControlPower, boolean floorClawControlPower, int floorClawRotationControlPower, boolean hangClawPower, int vDPad, boolean lockArm) {
-        //motorControls.loop(moveDirection, slowMode);
-        //armControls.loop(verticalArmControlPower, vDPad, lockArm);
-        //horizontalSlideControls.loop(horizontalSlideControlPower);
-        //pickupSlideControls.loop(pickUpSlideControlPower, false/*hangClawPower*/);
-        //floorClawControls.loop(floorClawControlPower);
-        //floorClawRotationControls.loop(false/*floorClawRotationControlPower*/);
-    }
-
-    public void loop(ActionInput input) {
-        loop(input.moveDirection, input.slowMode, input.verticalArmControlPower, input.horizontalSlideControlPower, input.pickUpSlideControlPower, input.floorClawControlPower, input.floorClawRotationControlPower, input.hangClawPower, 0, false);
     }
 }

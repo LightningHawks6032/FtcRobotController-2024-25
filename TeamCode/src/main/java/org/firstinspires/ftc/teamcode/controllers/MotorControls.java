@@ -3,12 +3,11 @@ package org.firstinspires.ftc.teamcode.controllers;
 import androidx.annotation.NonNull;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.PID;
+import org.firstinspires.ftc.teamcode.util.PID;
 import org.firstinspires.ftc.teamcode.auto.AutoAction;
 import org.firstinspires.ftc.teamcode.util.CubicBezier;
 import org.firstinspires.ftc.teamcode.util.PIDMotor;
 import org.firstinspires.ftc.teamcode.util.Vec2;
-import org.firstinspires.ftc.teamcode.util.Vec2Rot;
 import org.firstinspires.ftc.teamcode.hardware.IMotor;
 import org.firstinspires.ftc.teamcode.scheduling.ActionSequencer;
 
@@ -231,35 +230,6 @@ public final class MotorControls {
 
         telemetry = _telemetry;
         pid = new PIDMotion();
-    }
-
-    public void loop(Vec2Rot input, float slow) {
-        // Gets the direction the player is holding the left stick
-        Vec2 dir = input.toVec2();
-        // Gets the power the player is holding the right stick on it's horizontal axis
-        float raxis = input.r;
-
-        // If current state is either moving or idle, then the movement direction may be modified
-        if (dir.nonzero() && currentState != STATE.ROTATING) {
-            move(dir.scale(0.75f-(slow*0.5f)));
-            currentState = STATE.MOVING;
-        }
-        // If current state is either rotating or idle, then the rotation power may be modified
-        else if (raxis != 0 && currentState != STATE.MOVING) {
-            rotate(raxis * (0.75f-(slow*0.5f)));
-            currentState = STATE.ROTATING;
-        }
-        // If the player is neither moving nor rotating, then the motors should be stopped
-        else {
-            currentState = STATE.IDLE;
-            zeroAllMotors();
-        }
-
-        telemetry.addData("Motor Power", currentPower);
-        telemetry.addData("Left Stick", "x: " + dir.x + ", y: " + dir.y);
-        telemetry.addData("State", currentState.name());
-        // Applies the current power to the motors given it isn't zero
-        setPower(currentPower);
     }
 
     public void init() {

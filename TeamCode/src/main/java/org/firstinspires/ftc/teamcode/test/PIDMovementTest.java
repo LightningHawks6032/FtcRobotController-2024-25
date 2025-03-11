@@ -2,10 +2,8 @@ package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.PID;
+import org.firstinspires.ftc.teamcode.util.PID;
 import org.firstinspires.ftc.teamcode.hardware.DCMotor;
 
 @Autonomous(name = "PID Movement Test", group="Test")

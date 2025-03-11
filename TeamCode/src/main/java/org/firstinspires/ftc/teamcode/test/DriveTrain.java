@@ -28,7 +28,8 @@ public class DriveTrain extends OpMode {
     }
 
     @Override
+    @Deprecated
     public void loop() {
-        motorControls.loop(new Vec2Rot(gamepad1.left_stick_x * 0.5f, gamepad1.left_stick_y * 0.5f, gamepad1.right_stick_x * 0.5f), 0);
+        //motorControls.loop(new Vec2Rot(gamepad1.left_stick_x * 0.5f, gamepad1.left_stick_y * 0.5f, gamepad1.right_stick_x * 0.5f), 0);
     }
 }

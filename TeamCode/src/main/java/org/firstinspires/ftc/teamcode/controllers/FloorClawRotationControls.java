@@ -56,16 +56,4 @@ public class FloorClawRotationControls {
         c.setPower(start);
         d.setPower(start);
     }
-
-    public void loop(boolean power) {
-        telemetry.addData("power", power);
-        telemetry.addData("d pos", d.getPosition());
-
-        boolean released = toggle.released;
-        toggle.loop(power);
-        if (released != toggle.released) {
-            if (toggle.state) {open();}
-            else {close();}
-        }
-    }
 }

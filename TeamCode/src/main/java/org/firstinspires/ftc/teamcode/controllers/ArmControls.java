@@ -123,38 +123,4 @@ public class ArmControls {
         POW,
         IDL
     }
-
-
-    public void loop(float power, int vDPad, boolean lock) {
-        telemetry.addData("Pos", sr.getPosition() + ", " + sl.getPosition());
-        telemetry.addData("Target position", target);
-        telemetry.addData("Power", power);
-        telemetry.addData("Arm State", currentState.name());
-
-        if (currentState != STATE.POW && vDPad != 0) {
-            currentState = STATE.POS;
-            target = vDPad > 0 ? TOP : BOT;
-        }
-        else if (currentState != STATE.POS && power != 0) {
-            currentState = STATE.POW;
-        }
-        else if (currentState != STATE.POS){
-            currentState = STATE.IDL;
-        }
-
-        if (currentState == STATE.POS) {
-            if (Math.abs(sr.getPosition() - target) < OFFSET/* && Math.abs(sl.getPosition() - target) < OFFSET*/) {
-                currentState = STATE.IDL;
-            }
-            else {
-                moveTo(target);
-            }
-        }
-        else if (currentState == STATE.POW) {
-            moveWithPower(power);
-        }
-        else {
-            moveWithPower(0);
-        }
-    }
 }

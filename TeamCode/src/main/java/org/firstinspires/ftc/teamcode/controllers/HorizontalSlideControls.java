@@ -21,8 +21,4 @@ public class HorizontalSlideControls {
         telemetry = _telemetry;
         slideAction = new SlideAction();
     }
-
-    public void loop(int power) {
-        c.setPower(power*0.75f);
-    }
 }

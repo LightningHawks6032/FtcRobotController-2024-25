@@ -4,9 +4,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.controllers.RobotController;
-import org.firstinspires.ftc.teamcode.scheduling.ActionInput;
-
-import java.util.ArrayList;
 
 
 /// Sequence of actions robot takes during auto

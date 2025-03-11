@@ -34,9 +34,10 @@ public class FloorClawTest extends OpMode {
     }
 
     @Override
+    @Deprecated
     public void loop() {
         boolean floorClawControlPower = gamepad2.dpad_right;
-        floorClawControls.loop(floorClawControlPower);
-        floorClawRotationControls.loop(gamepad2.a);
+        //floorClawControls.loop(floorClawControlPower);
+        //floorClawRotationControls.loop(gamepad2.a);
     }
 }
